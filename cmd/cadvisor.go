@@ -15,31 +15,28 @@
 package main
 
 import (
-	"crypto/tls"
 	"flag"
 	"fmt"
-	"net/http"
-	"net/http/pprof"
 	"os"
 	"os/signal"
 	"runtime"
 	"strings"
 	"syscall"
+	"time"
 
-	cadvisorhttp "github.com/google/cadvisor/cmd/internal/http"
-	"github.com/google/cadvisor/container"
-	"github.com/google/cadvisor/manager"
-	"github.com/google/cadvisor/metrics"
-	"github.com/google/cadvisor/utils/sysfs"
-	"github.com/google/cadvisor/version"
+	"github.com/swarnimarun/cadvisor/container"
+	v1 "github.com/swarnimarun/cadvisor/info/v1"
+	"github.com/swarnimarun/cadvisor/manager"
+	"github.com/swarnimarun/cadvisor/utils/sysfs"
+	"github.com/swarnimarun/cadvisor/version"
 
 	// Register container providers
-	_ "github.com/google/cadvisor/cmd/internal/container/install"
+	_ "github.com/swarnimarun/cadvisor/cmd/internal/container/install"
 
 	// Register CloudProviders
-	_ "github.com/google/cadvisor/utils/cloudinfo/aws"
-	_ "github.com/google/cadvisor/utils/cloudinfo/azure"
-	_ "github.com/google/cadvisor/utils/cloudinfo/gce"
+	_ "github.com/swarnimarun/cadvisor/utils/cloudinfo/aws"
+	_ "github.com/swarnimarun/cadvisor/utils/cloudinfo/azure"
+	_ "github.com/swarnimarun/cadvisor/utils/cloudinfo/gce"
 
 	"k8s.io/klog/v2"
 )
@@ -55,15 +52,7 @@ var httpAuthRealm = flag.String("http_auth_realm", "localhost", "HTTP auth realm
 var httpDigestFile = flag.String("http_digest_file", "", "HTTP digest file for the web UI")
 var httpDigestRealm = flag.String("http_digest_realm", "localhost", "HTTP digest file for the web UI")
 
-var prometheusEndpoint = flag.String("prometheus_endpoint", "/metrics", "Endpoint to expose Prometheus metrics on")
-
 var enableProfiling = flag.Bool("profiling", false, "Enable profiling via web interface host:port/debug/pprof/")
-
-var collectorCert = flag.String("collector_cert", "", "Collector's certificate, exposed to endpoints for certificate based authentication.")
-var collectorKey = flag.String("collector_key", "", "Key for the collector's certificate")
-
-var storeContainerLabels = flag.Bool("store_container_labels", true, "convert container labels and environment variables into labels on prometheus metrics for each container. If flag set to false, then only metrics exported are container name, first alias, and image name")
-var whitelistedContainerLabels = flag.String("whitelisted_container_labels", "", "comma separated list of container labels to be converted to labels on prometheus metrics for each container. store_container_labels must be set to false for this to take effect.")
 
 var envMetadataWhiteList = flag.String("env_metadata_whitelist", "", "a comma-separated list of environment variable keys matched with specified prefix that needs to be collected for containers, only support containerd and docker runtime for now.")
 
@@ -74,6 +63,8 @@ var rawCgroupPrefixWhiteList = flag.String("raw_cgroup_prefix_whitelist", "", "A
 var perfEvents = flag.String("perf_events_config", "", "Path to a JSON file containing configuration of perf events to measure. Empty value disabled perf events measuring.")
 
 var resctrlInterval = flag.Duration("resctrl_interval", 0, "Resctrl mon groups updating interval. Zero value disables updating mon groups.")
+
+var containerId = flag.String("container_id", "", "ContainerId to watch")
 
 var (
 	// Metrics to be ignored.
@@ -130,40 +121,17 @@ func main() {
 
 	sysFs := sysfs.NewRealSysFs()
 
-	collectorHTTPClient := createCollectorHTTPClient(*collectorCert, *collectorKey)
-
-	resourceManager, err := manager.New(memoryStorage, sysFs, manager.HousekeepingConfigFlags, includedMetrics, &collectorHTTPClient, strings.Split(*rawCgroupPrefixWhiteList, ","), strings.Split(*envMetadataWhiteList, ","), *perfEvents, *resctrlInterval)
+	resourceManager, err := manager.New(
+		memoryStorage,
+		sysFs,
+		manager.HousekeepingConfigFlags,
+		includedMetrics,
+		strings.Split(*rawCgroupPrefixWhiteList, ","),
+		strings.Split(*envMetadataWhiteList, ","),
+	)
 	if err != nil {
 		klog.Fatalf("Failed to create a manager: %s", err)
 	}
-
-	mux := http.NewServeMux()
-
-	if *enableProfiling {
-		mux.HandleFunc("/debug/pprof/", pprof.Index)
-		mux.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
-		mux.HandleFunc("/debug/pprof/profile", pprof.Profile)
-		mux.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
-	}
-
-	// Register all HTTP handlers.
-	err = cadvisorhttp.RegisterHandlers(mux, resourceManager, *httpAuthFile, *httpAuthRealm, *httpDigestFile, *httpDigestRealm, *urlBasePrefix)
-	if err != nil {
-		klog.Fatalf("Failed to register HTTP handlers: %v", err)
-	}
-
-	containerLabelFunc := metrics.DefaultContainerLabels
-	if !*storeContainerLabels {
-		whitelistedLabels := strings.Split(*whitelistedContainerLabels, ",")
-		// Trim spacing in labels
-		for i := range whitelistedLabels {
-			whitelistedLabels[i] = strings.TrimSpace(whitelistedLabels[i])
-		}
-		containerLabelFunc = metrics.BaseContainerLabels(whitelistedLabels)
-	}
-
-	// Register Prometheus collector to gather information about containers, Go runtime, processes, and machine
-	cadvisorhttp.RegisterPrometheusHandler(mux, resourceManager, *prometheusEndpoint, containerLabelFunc, includedMetrics)
 
 	// Start the manager.
 	if err := resourceManager.Start(); err != nil {
@@ -175,11 +143,33 @@ func main() {
 
 	klog.V(1).Infof("Starting cAdvisor version: %s-%s on port %d", version.Info["version"], version.Info["revision"], *argPort)
 
-	rootMux := http.NewServeMux()
-	rootMux.Handle(*urlBasePrefix+"/", http.StripPrefix(*urlBasePrefix, mux))
-
-	addr := fmt.Sprintf("%s:%d", *argIP, *argPort)
-	klog.Fatal(http.ListenAndServe(addr, rootMux))
+	for {
+		cont, err := resourceManager.AllContainerdContainers(&v1.ContainerInfoRequest{
+			NumStats: 1,
+		})
+		if err != nil {
+			klog.Error(err)
+			return
+		}
+		for n, c := range cont {
+			if len(*containerId) != 0 && !strings.Contains(n, *containerId) {
+				continue
+			}
+			klog.V(1).Info("==============================================================")
+			klog.V(1).Info(c.Aliases)
+			klog.V(1).Info("----stats----")
+			for _, s := range c.Stats {
+				klog.V(1).Infof("\tcpu: %v seconds", float64(s.Cpu.Usage.User)/1000000000.0)
+				klog.V(1).Infof("\tcpu load average: %v ", s.Cpu.LoadAverage)
+				klog.V(1).Infof("\tcpu load d average: %v ", s.Cpu.LoadDAverage)
+				klog.V(1).Infof("\tmem: %v MB", float64(s.Memory.Usage)/(1024*1024))
+			}
+			klog.V(1).Info("----end----")
+			klog.V(1).Info("==============================================================")
+		}
+		// run every second
+		time.Sleep(10 * time.Millisecond)
+	}
 }
 
 func setMaxProcs() {
@@ -213,30 +203,4 @@ func installSignalHandler(containerManager manager.Manager) {
 		klog.Infof("Exiting given signal: %v", sig)
 		os.Exit(0)
 	}()
-}
-
-func createCollectorHTTPClient(collectorCert, collectorKey string) http.Client {
-	//Enable accessing insecure endpoints. We should be able to access metrics from any endpoint
-	tlsConfig := &tls.Config{
-		InsecureSkipVerify: true,
-	}
-
-	if collectorCert != "" {
-		if collectorKey == "" {
-			klog.Fatal("The collector_key value must be specified if the collector_cert value is set.")
-		}
-		cert, err := tls.LoadX509KeyPair(collectorCert, collectorKey)
-		if err != nil {
-			klog.Fatalf("Failed to use the collector certificate and key: %s", err)
-		}
-
-		tlsConfig.Certificates = []tls.Certificate{cert}
-		tlsConfig.BuildNameToCertificate() //nolint: staticcheck
-	}
-
-	transport := &http.Transport{
-		TLSClientConfig: tlsConfig,
-	}
-
-	return http.Client{Transport: transport}
 }

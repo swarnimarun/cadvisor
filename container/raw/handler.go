@@ -18,13 +18,13 @@ package raw
 import (
 	"fmt"
 
-	"github.com/google/cadvisor/container"
-	"github.com/google/cadvisor/container/common"
-	"github.com/google/cadvisor/container/libcontainer"
-	"github.com/google/cadvisor/fs"
-	info "github.com/google/cadvisor/info/v1"
-	"github.com/google/cadvisor/machine"
-	"github.com/opencontainers/runc/libcontainer/cgroups"
+	"github.com/cedana/runc/libcontainer/cgroups"
+	"github.com/swarnimarun/cadvisor/container"
+	"github.com/swarnimarun/cadvisor/container/common"
+	"github.com/swarnimarun/cadvisor/container/libcontainer"
+	"github.com/swarnimarun/cadvisor/fs"
+	info "github.com/swarnimarun/cadvisor/info/v1"
+	"github.com/swarnimarun/cadvisor/machine"
 
 	"k8s.io/klog/v2"
 )

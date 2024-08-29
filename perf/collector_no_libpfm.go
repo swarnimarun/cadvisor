@@ -19,7 +19,7 @@
 package perf
 
 import (
-	"github.com/google/cadvisor/stats"
+	"github.com/swarnimarun/cadvisor/stats"
 
 	"k8s.io/klog/v2"
 )

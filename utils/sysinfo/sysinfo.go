@@ -22,8 +22,8 @@ import (
 	"strconv"
 	"strings"
 
-	info "github.com/google/cadvisor/info/v1"
-	"github.com/google/cadvisor/utils/sysfs"
+	info "github.com/swarnimarun/cadvisor/info/v1"
+	"github.com/swarnimarun/cadvisor/utils/sysfs"
 
 	"k8s.io/klog/v2"
 )

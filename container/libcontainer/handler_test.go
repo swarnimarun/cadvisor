@@ -19,10 +19,10 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/opencontainers/runc/libcontainer/cgroups"
+	"github.com/cedana/runc/libcontainer/cgroups"
 	"github.com/stretchr/testify/assert"
 
-	info "github.com/google/cadvisor/info/v1"
+	info "github.com/swarnimarun/cadvisor/info/v1"
 )
 
 func TestScanInterfaceStats(t *testing.T) {

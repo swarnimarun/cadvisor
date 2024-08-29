@@ -17,18 +17,18 @@ package crio
 import (
 	"k8s.io/klog/v2"
 
-	"github.com/google/cadvisor/container"
-	"github.com/google/cadvisor/fs"
-	info "github.com/google/cadvisor/info/v1"
-	"github.com/google/cadvisor/watcher"
+	"github.com/swarnimarun/cadvisor/container"
+	"github.com/swarnimarun/cadvisor/fs"
+	info "github.com/swarnimarun/cadvisor/info/v1"
+	"github.com/swarnimarun/cadvisor/watcher"
 )
 
 // NewPlugin returns an implementation of container.Plugin suitable for passing to container.RegisterPlugin()
-func NewPlugin() container.Plugin {
-	return &plugin{}
+func NewPlugin(success *bool) container.Plugin {
+	return &plugin{success: success}
 }
 
-type plugin struct{}
+type plugin struct{ success *bool }
 
 func (p *plugin) InitializeFSContext(context *fs.Context) error {
 	crioClient, err := Client()
@@ -47,5 +47,6 @@ func (p *plugin) InitializeFSContext(context *fs.Context) error {
 
 func (p *plugin) Register(factory info.MachineInfoFactory, fsInfo fs.FsInfo, includedMetrics container.MetricSet) (watcher.ContainerWatcher, error) {
 	err := Register(factory, fsInfo, includedMetrics)
+	*p.success = err == nil
 	return nil, err
 }
