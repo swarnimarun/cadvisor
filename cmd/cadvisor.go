@@ -15,21 +15,18 @@
 package main
 
 import (
-	"crypto/tls"
 	"flag"
 	"fmt"
-	"net/http"
-	"net/http/pprof"
 	"os"
 	"os/signal"
 	"runtime"
 	"strings"
 	"syscall"
+	"time"
 
-	cadvisorhttp "github.com/google/cadvisor/cmd/internal/http"
 	"github.com/google/cadvisor/container"
+	v1 "github.com/google/cadvisor/info/v1"
 	"github.com/google/cadvisor/manager"
-	"github.com/google/cadvisor/metrics"
 	"github.com/google/cadvisor/utils/sysfs"
 	"github.com/google/cadvisor/version"
 
@@ -55,15 +52,7 @@ var httpAuthRealm = flag.String("http_auth_realm", "localhost", "HTTP auth realm
 var httpDigestFile = flag.String("http_digest_file", "", "HTTP digest file for the web UI")
 var httpDigestRealm = flag.String("http_digest_realm", "localhost", "HTTP digest file for the web UI")
 
-var prometheusEndpoint = flag.String("prometheus_endpoint", "/metrics", "Endpoint to expose Prometheus metrics on")
-
 var enableProfiling = flag.Bool("profiling", false, "Enable profiling via web interface host:port/debug/pprof/")
-
-var collectorCert = flag.String("collector_cert", "", "Collector's certificate, exposed to endpoints for certificate based authentication.")
-var collectorKey = flag.String("collector_key", "", "Key for the collector's certificate")
-
-var storeContainerLabels = flag.Bool("store_container_labels", true, "convert container labels and environment variables into labels on prometheus metrics for each container. If flag set to false, then only metrics exported are container name, first alias, and image name")
-var whitelistedContainerLabels = flag.String("whitelisted_container_labels", "", "comma separated list of container labels to be converted to labels on prometheus metrics for each container. store_container_labels must be set to false for this to take effect.")
 
 var envMetadataWhiteList = flag.String("env_metadata_whitelist", "", "a comma-separated list of environment variable keys matched with specified prefix that needs to be collected for containers, only support containerd and docker runtime for now.")
 
@@ -130,40 +119,10 @@ func main() {
 
 	sysFs := sysfs.NewRealSysFs()
 
-	collectorHTTPClient := createCollectorHTTPClient(*collectorCert, *collectorKey)
-
-	resourceManager, err := manager.New(memoryStorage, sysFs, manager.HousekeepingConfigFlags, includedMetrics, &collectorHTTPClient, strings.Split(*rawCgroupPrefixWhiteList, ","), strings.Split(*envMetadataWhiteList, ","), *perfEvents, *resctrlInterval)
+	resourceManager, err := manager.New(memoryStorage, sysFs, manager.HousekeepingConfigFlags, includedMetrics, strings.Split(*rawCgroupPrefixWhiteList, ","), strings.Split(*envMetadataWhiteList, ","), *perfEvents, *resctrlInterval)
 	if err != nil {
 		klog.Fatalf("Failed to create a manager: %s", err)
 	}
-
-	mux := http.NewServeMux()
-
-	if *enableProfiling {
-		mux.HandleFunc("/debug/pprof/", pprof.Index)
-		mux.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
-		mux.HandleFunc("/debug/pprof/profile", pprof.Profile)
-		mux.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
-	}
-
-	// Register all HTTP handlers.
-	err = cadvisorhttp.RegisterHandlers(mux, resourceManager, *httpAuthFile, *httpAuthRealm, *httpDigestFile, *httpDigestRealm, *urlBasePrefix)
-	if err != nil {
-		klog.Fatalf("Failed to register HTTP handlers: %v", err)
-	}
-
-	containerLabelFunc := metrics.DefaultContainerLabels
-	if !*storeContainerLabels {
-		whitelistedLabels := strings.Split(*whitelistedContainerLabels, ",")
-		// Trim spacing in labels
-		for i := range whitelistedLabels {
-			whitelistedLabels[i] = strings.TrimSpace(whitelistedLabels[i])
-		}
-		containerLabelFunc = metrics.BaseContainerLabels(whitelistedLabels)
-	}
-
-	// Register Prometheus collector to gather information about containers, Go runtime, processes, and machine
-	cadvisorhttp.RegisterPrometheusHandler(mux, resourceManager, *prometheusEndpoint, containerLabelFunc, includedMetrics)
 
 	// Start the manager.
 	if err := resourceManager.Start(); err != nil {
@@ -175,11 +134,16 @@ func main() {
 
 	klog.V(1).Infof("Starting cAdvisor version: %s-%s on port %d", version.Info["version"], version.Info["revision"], *argPort)
 
-	rootMux := http.NewServeMux()
-	rootMux.Handle(*urlBasePrefix+"/", http.StripPrefix(*urlBasePrefix, mux))
-
-	addr := fmt.Sprintf("%s:%d", *argIP, *argPort)
-	klog.Fatal(http.ListenAndServe(addr, rootMux))
+	cont, err := resourceManager.AllDockerContainers(&v1.ContainerInfoRequest{
+		NumStats: 60,
+		Start:    time.Now(),
+		End:      time.Now(),
+	})
+	if err != nil {
+		klog.Error(err)
+		return
+	}
+	klog.V(1).Infof("Containers found: %d", len(cont))
 }
 
 func setMaxProcs() {
@@ -213,30 +177,4 @@ func installSignalHandler(containerManager manager.Manager) {
 		klog.Infof("Exiting given signal: %v", sig)
 		os.Exit(0)
 	}()
-}
-
-func createCollectorHTTPClient(collectorCert, collectorKey string) http.Client {
-	//Enable accessing insecure endpoints. We should be able to access metrics from any endpoint
-	tlsConfig := &tls.Config{
-		InsecureSkipVerify: true,
-	}
-
-	if collectorCert != "" {
-		if collectorKey == "" {
-			klog.Fatal("The collector_key value must be specified if the collector_cert value is set.")
-		}
-		cert, err := tls.LoadX509KeyPair(collectorCert, collectorKey)
-		if err != nil {
-			klog.Fatalf("Failed to use the collector certificate and key: %s", err)
-		}
-
-		tlsConfig.Certificates = []tls.Certificate{cert}
-		tlsConfig.BuildNameToCertificate() //nolint: staticcheck
-	}
-
-	transport := &http.Transport{
-		TLSClientConfig: tlsConfig,
-	}
-
-	return http.Client{Transport: transport}
 }

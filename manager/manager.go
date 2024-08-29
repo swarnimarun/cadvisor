@@ -18,7 +18,6 @@ package manager
 import (
 	"flag"
 	"fmt"
-	"net/http"
 	"os"
 	"path"
 	"strconv"
@@ -28,7 +27,6 @@ import (
 	"time"
 
 	"github.com/google/cadvisor/cache/memory"
-	"github.com/google/cadvisor/collector"
 	"github.com/google/cadvisor/container"
 	"github.com/google/cadvisor/container/raw"
 	"github.com/google/cadvisor/events"
@@ -38,8 +36,6 @@ import (
 	"github.com/google/cadvisor/machine"
 	"github.com/google/cadvisor/nvm"
 	"github.com/google/cadvisor/perf"
-	"github.com/google/cadvisor/resctrl"
-	"github.com/google/cadvisor/stats"
 	"github.com/google/cadvisor/utils/oomparser"
 	"github.com/google/cadvisor/utils/sysfs"
 	"github.com/google/cadvisor/version"
@@ -152,7 +148,16 @@ type HousekeepingConfig = struct {
 }
 
 // New takes a memory storage and returns a new manager.
-func New(memoryCache *memory.InMemoryCache, sysfs sysfs.SysFs, HousekeepingConfig HousekeepingConfig, includedMetricsSet container.MetricSet, collectorHTTPClient *http.Client, rawContainerCgroupPathPrefixWhiteList, containerEnvMetadataWhiteList []string, perfEventsFile string, resctrlInterval time.Duration) (Manager, error) {
+func New(
+	memoryCache *memory.InMemoryCache,
+	sysfs sysfs.SysFs,
+	HousekeepingConfig HousekeepingConfig,
+	includedMetricsSet container.MetricSet,
+	rawContainerCgroupPathPrefixWhiteList,
+	containerEnvMetadataWhiteList []string,
+	perfEventsFile string,
+	resctrlInterval time.Duration,
+) (Manager, error) {
 	if memoryCache == nil {
 		return nil, fmt.Errorf("manager requires memory storage")
 	}
@@ -204,7 +209,6 @@ func New(memoryCache *memory.InMemoryCache, sysfs sysfs.SysFs, HousekeepingConfi
 		includedMetrics:                       includedMetricsSet,
 		containerWatchers:                     []watcher.ContainerWatcher{},
 		eventsChannel:                         eventsChannel,
-		collectorHTTPClient:                   collectorHTTPClient,
 		rawContainerCgroupPathPrefixWhiteList: rawContainerCgroupPathPrefixWhiteList,
 		containerEnvMetadataWhiteList:         containerEnvMetadataWhiteList,
 	}
@@ -215,16 +219,6 @@ func New(memoryCache *memory.InMemoryCache, sysfs sysfs.SysFs, HousekeepingConfi
 	}
 	newManager.machineInfo = *machineInfo
 	klog.V(1).Infof("Machine: %+v", newManager.machineInfo)
-
-	newManager.perfManager, err = perf.NewManager(perfEventsFile, machineInfo.Topology)
-	if err != nil {
-		return nil, err
-	}
-
-	newManager.resctrlManager, err = resctrl.NewManager(resctrlInterval, resctrl.Setup, machineInfo.CPUVendorID, inHostNamespace)
-	if err != nil {
-		klog.V(4).Infof("Cannot gather resctrl metrics: %v", err)
-	}
 
 	versionInfo, err := getVersionInfo()
 	if err != nil {
@@ -263,9 +257,6 @@ type manager struct {
 	includedMetrics          container.MetricSet
 	containerWatchers        []watcher.ContainerWatcher
 	eventsChannel            chan watcher.ContainerEvent
-	collectorHTTPClient      *http.Client
-	perfManager              stats.Manager
-	resctrlManager           resctrl.Manager
 	// List of raw container cgroup path prefix whitelist.
 	rawContainerCgroupPathPrefixWhiteList []string
 	// List of container env prefix whitelist, the matched container envs would be collected into metrics as extra labels.
@@ -299,12 +290,6 @@ func (m *manager) Start() error {
 		return err
 	}
 	m.containerWatchers = append(m.containerWatchers, rawWatcher)
-
-	// Watch for OOMs.
-	err = m.watchForNewOoms()
-	if err != nil {
-		klog.Warningf("Could not configure a source for OOM detection, disabling OOM events: %v", err)
-	}
 
 	// If there are no factories, don't start any housekeeping and serve the information we do have.
 	if !container.HasFactories() {
@@ -858,7 +843,7 @@ func (m *manager) GetProcessList(containerName string, options v2.RequestOptions
 		return nil, err
 	}
 	if len(conts) != 1 {
-		return nil, fmt.Errorf("Expected the request to match only one container")
+		return nil, fmt.Errorf("expected the request to match only one container")
 	}
 	// TODO(rjnagal): handle count? Only if we can do count by type (eg. top 5 cpu users)
 	ps := []v2.ProcessInfo{}
@@ -869,37 +854,6 @@ func (m *manager) GetProcessList(containerName string, options v2.RequestOptions
 		}
 	}
 	return ps, nil
-}
-
-func (m *manager) registerCollectors(collectorConfigs map[string]string, cont *containerData) error {
-	for k, v := range collectorConfigs {
-		configFile, err := cont.ReadFile(v, m.inHostNamespace)
-		if err != nil {
-			return fmt.Errorf("failed to read config file %q for config %q, container %q: %v", k, v, cont.info.Name, err)
-		}
-		klog.V(4).Infof("Got config from %q: %q", v, configFile)
-
-		if strings.HasPrefix(k, "prometheus") || strings.HasPrefix(k, "Prometheus") {
-			newCollector, err := collector.NewPrometheusCollector(k, configFile, *applicationMetricsCountLimit, cont.handler, m.collectorHTTPClient)
-			if err != nil {
-				return fmt.Errorf("failed to create collector for container %q, config %q: %v", cont.info.Name, k, err)
-			}
-			err = cont.collectorManager.RegisterCollector(newCollector)
-			if err != nil {
-				return fmt.Errorf("failed to register collector for container %q, config %q: %v", cont.info.Name, k, err)
-			}
-		} else {
-			newCollector, err := collector.NewCollector(k, configFile, *applicationMetricsCountLimit, cont.handler, m.collectorHTTPClient)
-			if err != nil {
-				return fmt.Errorf("failed to create collector for container %q, config %q: %v", cont.info.Name, k, err)
-			}
-			err = cont.collectorManager.RegisterCollector(newCollector)
-			if err != nil {
-				return fmt.Errorf("failed to register collector for container %q, config %q: %v", cont.info.Name, k, err)
-			}
-		}
-	}
-	return nil
 }
 
 // Create a container.
@@ -929,44 +883,11 @@ func (m *manager) createContainerLocked(containerName string, watchSource watche
 		klog.V(4).Infof("ignoring container %q", containerName)
 		return nil
 	}
-	collectorManager, err := collector.NewCollectorManager()
-	if err != nil {
-		return err
-	}
 
 	logUsage := *logCadvisorUsage && containerName == m.cadvisorContainer
-	cont, err := newContainerData(containerName, m.memoryCache, handler, logUsage, collectorManager, m.maxHousekeepingInterval, m.allowDynamicHousekeeping, clock.RealClock{})
+	cont, err := newContainerData(containerName, m.memoryCache, handler, logUsage, m.maxHousekeepingInterval, m.allowDynamicHousekeeping, clock.RealClock{})
 	if err != nil {
 		return err
-	}
-
-	if m.includedMetrics.Has(container.PerfMetrics) {
-		perfCgroupPath, err := handler.GetCgroupPath("perf_event")
-		if err != nil {
-			klog.Warningf("Error getting perf_event cgroup path: %q", err)
-		} else {
-			cont.perfCollector, err = m.perfManager.GetCollector(perfCgroupPath)
-			if err != nil {
-				klog.Errorf("Perf event metrics will not be available for container %q: %v", containerName, err)
-			}
-		}
-	}
-
-	if m.includedMetrics.Has(container.ResctrlMetrics) {
-		cont.resctrlCollector, err = m.resctrlManager.GetCollector(containerName, func() ([]string, error) {
-			return cont.getContainerPids(m.inHostNamespace)
-		}, len(m.machineInfo.Topology))
-		if err != nil {
-			klog.V(4).Infof("resctrl metrics will not be available for container %s: %s", cont.info.Name, err)
-		}
-	}
-
-	// Add collectors
-	labels := handler.GetContainerLabels()
-	collectorConfigs := collector.GetCollectorConfigs(labels)
-	err = m.registerCollectors(collectorConfigs, cont)
-	if err != nil {
-		klog.Warningf("Failed to register collectors for %q: %v", containerName, err)
 	}
 
 	// Add the container name and all its aliases. The aliases must be within the namespace of the factory.

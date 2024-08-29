@@ -24,7 +24,6 @@ import (
 	"time"
 
 	"github.com/google/cadvisor/cache/memory"
-	"github.com/google/cadvisor/collector"
 	"github.com/google/cadvisor/container"
 	containertest "github.com/google/cadvisor/container/testing"
 	info "github.com/google/cadvisor/info/v1"
@@ -51,7 +50,7 @@ func setupContainerData(t *testing.T, spec info.ContainerSpec) (*containerData, 
 	)
 	memoryCache := memory.New(60, nil)
 	fakeClock := clock.NewFakeClock(time.Now())
-	ret, err := newContainerData(containerName, memoryCache, mockHandler, false, &collector.GenericCollectorManager{}, 60*time.Second, true, fakeClock)
+	ret, err := newContainerData(containerName, memoryCache, mockHandler, false, 60*time.Second, true, fakeClock)
 	if err != nil {
 		t.Fatal(err)
 	}

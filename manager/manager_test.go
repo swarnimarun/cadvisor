@@ -24,7 +24,6 @@ import (
 	"time"
 
 	"github.com/google/cadvisor/cache/memory"
-	"github.com/google/cadvisor/collector"
 	"github.com/google/cadvisor/container"
 	containertest "github.com/google/cadvisor/container/testing"
 	info "github.com/google/cadvisor/info/v1"
@@ -65,7 +64,7 @@ func createManagerAndAddContainers(
 			spec,
 			nil,
 		).Once()
-		cont, err := newContainerData(name, memoryCache, mockHandler, false, &collector.GenericCollectorManager{}, 60*time.Second, true, clock.NewFakeClock(time.Now()))
+		cont, err := newContainerData(name, memoryCache, mockHandler, false, 60*time.Second, true, clock.NewFakeClock(time.Now()))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -128,7 +127,7 @@ func createManagerAndAddSubContainers(
 			subcontainerList[idx],
 			nil,
 		)
-		cont, err := newContainerData(name, memoryCache, mockHandler, false, &collector.GenericCollectorManager{}, 60*time.Second, true, clock.NewFakeClock(time.Now()))
+		cont, err := newContainerData(name, memoryCache, mockHandler, false, 60*time.Second, true, clock.NewFakeClock(time.Now()))
 		if err != nil {
 			t.Fatal(err)
 		}
