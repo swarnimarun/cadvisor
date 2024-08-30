@@ -155,9 +155,7 @@ func New(
 	includedMetricsSet container.MetricSet,
 	rawContainerCgroupPathPrefixWhiteList,
 	containerEnvMetadataWhiteList []string,
-	perfEventsFile string,
-	resctrlInterval time.Duration,
-) (Manager, error) {
+) (*manager, error) {
 	if memoryCache == nil {
 		return nil, fmt.Errorf("manager requires memory storage")
 	}
@@ -602,6 +600,11 @@ func (m *manager) getAllNamespacedContainers(ns string) map[string]*containerDat
 
 func (m *manager) AllDockerContainers(query *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error) {
 	containers := m.getAllNamespacedContainers(DockerNamespace)
+	return m.containersInfo(containers, query)
+}
+
+func (m *manager) AllContainerdContainers(query *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error) {
+	containers := m.getAllNamespacedContainers("containerd")
 	return m.containersInfo(containers, query)
 }
 

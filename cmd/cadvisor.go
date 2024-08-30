@@ -64,6 +64,8 @@ var perfEvents = flag.String("perf_events_config", "", "Path to a JSON file cont
 
 var resctrlInterval = flag.Duration("resctrl_interval", 0, "Resctrl mon groups updating interval. Zero value disables updating mon groups.")
 
+var containerId = flag.String("container_id", "", "ContainerId to watch")
+
 var (
 	// Metrics to be ignored.
 	// Tcp metrics are ignored by default.
@@ -119,7 +121,14 @@ func main() {
 
 	sysFs := sysfs.NewRealSysFs()
 
-	resourceManager, err := manager.New(memoryStorage, sysFs, manager.HousekeepingConfigFlags, includedMetrics, strings.Split(*rawCgroupPrefixWhiteList, ","), strings.Split(*envMetadataWhiteList, ","), *perfEvents, *resctrlInterval)
+	resourceManager, err := manager.New(
+		memoryStorage,
+		sysFs,
+		manager.HousekeepingConfigFlags,
+		includedMetrics,
+		strings.Split(*rawCgroupPrefixWhiteList, ","),
+		strings.Split(*envMetadataWhiteList, ","),
+	)
 	if err != nil {
 		klog.Fatalf("Failed to create a manager: %s", err)
 	}
@@ -134,16 +143,33 @@ func main() {
 
 	klog.V(1).Infof("Starting cAdvisor version: %s-%s on port %d", version.Info["version"], version.Info["revision"], *argPort)
 
-	cont, err := resourceManager.AllDockerContainers(&v1.ContainerInfoRequest{
-		NumStats: 60,
-		Start:    time.Now(),
-		End:      time.Now(),
-	})
-	if err != nil {
-		klog.Error(err)
-		return
+	for {
+		cont, err := resourceManager.AllContainerdContainers(&v1.ContainerInfoRequest{
+			NumStats: 1,
+		})
+		if err != nil {
+			klog.Error(err)
+			return
+		}
+		for n, c := range cont {
+			if len(*containerId) != 0 && !strings.Contains(n, *containerId) {
+				continue
+			}
+			klog.V(1).Info("==============================================================")
+			klog.V(1).Info(c.Aliases)
+			klog.V(1).Info("----stats----")
+			for _, s := range c.Stats {
+				klog.V(1).Info("\tcpu: ", s.Cpu.Usage.User)
+				klog.V(1).Info("\tmem: ", s.Memory.Usage)
+				klog.V(1).Info("\trxp: ", s.Network.RxBytes)
+				klog.V(1).Info("\ttxp: ", s.Network.TxPackets)
+			}
+			klog.V(1).Info("----end----")
+			klog.V(1).Info("==============================================================")
+		}
+		// run every second
+		time.Sleep(1 * time.Second)
 	}
-	klog.V(1).Infof("Containers found: %d", len(cont))
 }
 
 func setMaxProcs() {
