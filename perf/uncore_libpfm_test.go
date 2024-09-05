@@ -29,7 +29,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	v1 "github.com/google/cadvisor/info/v1"
+	v1 "github.com/swarnimarun/cadvisor/info/v1"
 )
 
 func mockSystemDevices() (string, error) {

@@ -34,7 +34,7 @@ import (
 
 	"k8s.io/klog/v2"
 
-	cadvisorApi "github.com/google/cadvisor/info/v2"
+	cadvisorApi "github.com/swarnimarun/cadvisor/info/v2"
 )
 
 // must be able to ssh into hosts without password
@@ -180,7 +180,7 @@ func PushAndRunTests(host, testDir string) (result error) {
 		}
 		// Run the command
 
-		err = RunCommand("go", "test", "--timeout", testTimeout.String(), "github.com/google/cadvisor/integration/tests/...", "--host", host, "--port", portStr, "--ssh-options", *sshOptions)
+		err = RunCommand("go", "test", "--timeout", testTimeout.String(), "github.com/swarnimarun/cadvisor/integration/tests/...", "--host", host, "--port", portStr, "--ssh-options", *sshOptions)
 		if err == nil {
 			// On success, break out of retry loop
 			break

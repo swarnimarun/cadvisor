@@ -21,8 +21,8 @@ import (
 	"testing"
 	"time"
 
-	v1 "github.com/google/cadvisor/info/v1"
-	"github.com/google/cadvisor/integration/framework"
+	v1 "github.com/swarnimarun/cadvisor/info/v1"
+	"github.com/swarnimarun/cadvisor/integration/framework"
 
 	"github.com/stretchr/testify/assert"
 )

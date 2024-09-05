@@ -23,7 +23,7 @@ import (
 
 	"golang.org/x/sys/unix"
 
-	info "github.com/google/cadvisor/info/v1"
+	info "github.com/swarnimarun/cadvisor/info/v1"
 )
 
 var (

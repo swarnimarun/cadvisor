@@ -18,7 +18,7 @@ import (
 	// TODO(rjnagal): Move structs from v1.
 	"time"
 
-	v1 "github.com/google/cadvisor/info/v1"
+	v1 "github.com/swarnimarun/cadvisor/info/v1"
 )
 
 type Attributes struct {

@@ -24,19 +24,19 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/google/cadvisor/container"
-	v1 "github.com/google/cadvisor/info/v1"
-	"github.com/google/cadvisor/manager"
-	"github.com/google/cadvisor/utils/sysfs"
-	"github.com/google/cadvisor/version"
+	"github.com/swarnimarun/cadvisor/container"
+	v1 "github.com/swarnimarun/cadvisor/info/v1"
+	"github.com/swarnimarun/cadvisor/manager"
+	"github.com/swarnimarun/cadvisor/utils/sysfs"
+	"github.com/swarnimarun/cadvisor/version"
 
 	// Register container providers
-	_ "github.com/google/cadvisor/cmd/internal/container/install"
+	_ "github.com/swarnimarun/cadvisor/cmd/internal/container/install"
 
 	// Register CloudProviders
-	_ "github.com/google/cadvisor/utils/cloudinfo/aws"
-	_ "github.com/google/cadvisor/utils/cloudinfo/azure"
-	_ "github.com/google/cadvisor/utils/cloudinfo/gce"
+	_ "github.com/swarnimarun/cadvisor/utils/cloudinfo/aws"
+	_ "github.com/swarnimarun/cadvisor/utils/cloudinfo/azure"
+	_ "github.com/swarnimarun/cadvisor/utils/cloudinfo/gce"
 
 	"k8s.io/klog/v2"
 )
@@ -159,16 +159,16 @@ func main() {
 			klog.V(1).Info(c.Aliases)
 			klog.V(1).Info("----stats----")
 			for _, s := range c.Stats {
-				klog.V(1).Info("\tcpu: ", s.Cpu.Usage.User)
-				klog.V(1).Info("\tmem: ", s.Memory.Usage)
-				klog.V(1).Info("\trxp: ", s.Network.RxBytes)
-				klog.V(1).Info("\ttxp: ", s.Network.TxPackets)
+				klog.V(1).Infof("\tcpu: %v seconds", float64(s.Cpu.Usage.User)/1000000000.0)
+				klog.V(1).Infof("\tcpu load average: %v ", s.Cpu.LoadAverage)
+				klog.V(1).Infof("\tcpu load d average: %v ", s.Cpu.LoadDAverage)
+				klog.V(1).Infof("\tmem: %v MB", float64(s.Memory.Usage)/(1024*1024))
 			}
 			klog.V(1).Info("----end----")
 			klog.V(1).Info("==============================================================")
 		}
 		// run every second
-		time.Sleep(1 * time.Second)
+		time.Sleep(10 * time.Millisecond)
 	}
 }
 
