@@ -41,7 +41,7 @@ import (
 	"github.com/swarnimarun/cadvisor/version"
 	"github.com/swarnimarun/cadvisor/watcher"
 
-	"github.com/opencontainers/runc/libcontainer/cgroups"
+	"github.com/cedana/runc/libcontainer/cgroups"
 
 	"k8s.io/klog/v2"
 	"k8s.io/utils/clock"

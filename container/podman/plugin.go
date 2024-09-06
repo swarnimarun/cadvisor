@@ -17,7 +17,7 @@ package podman
 import (
 	"fmt"
 
-	"github.com/opencontainers/runc/libcontainer/cgroups"
+	"github.com/cedana/runc/libcontainer/cgroups"
 	"k8s.io/klog/v2"
 
 	"github.com/swarnimarun/cadvisor/container"

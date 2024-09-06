@@ -23,7 +23,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/opencontainers/runc/libcontainer/cgroups"
+	"github.com/cedana/runc/libcontainer/cgroups"
 	"github.com/swarnimarun/cadvisor/container"
 	"github.com/swarnimarun/cadvisor/container/common"
 	dockerutil "github.com/swarnimarun/cadvisor/container/docker/utils"

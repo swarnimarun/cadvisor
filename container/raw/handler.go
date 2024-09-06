@@ -18,7 +18,7 @@ package raw
 import (
 	"fmt"
 
-	"github.com/opencontainers/runc/libcontainer/cgroups"
+	"github.com/cedana/runc/libcontainer/cgroups"
 	"github.com/swarnimarun/cadvisor/container"
 	"github.com/swarnimarun/cadvisor/container/common"
 	"github.com/swarnimarun/cadvisor/container/libcontainer"
