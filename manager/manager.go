@@ -136,6 +136,8 @@ type Manager interface {
 	// Returns debugging information. Map of lines per category.
 	DebugInfo() map[string][]string
 
+	AllContainerdContainers(c *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error)
+
 	AllPodmanContainers(c *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error)
 
 	PodmanContainer(containerName string, query *info.ContainerInfoRequest) (info.ContainerInfo, error)
