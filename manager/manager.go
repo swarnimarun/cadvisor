@@ -138,6 +138,8 @@ type Manager interface {
 
 	AllContainerdContainers(c *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error)
 
+	AllCrioContainers(c *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error)
+
 	AllPodmanContainers(c *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error)
 
 	PodmanContainer(containerName string, query *info.ContainerInfoRequest) (info.ContainerInfo, error)
@@ -607,6 +609,11 @@ func (m *manager) AllDockerContainers(query *info.ContainerInfoRequest) (map[str
 
 func (m *manager) AllContainerdContainers(query *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error) {
 	containers := m.getAllNamespacedContainers("containerd")
+	return m.containersInfo(containers, query)
+}
+
+func (m *manager) AllCrioContainers(query *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error) {
+	containers := m.getAllNamespacedContainers("crio")
 	return m.containersInfo(containers, query)
 }
 

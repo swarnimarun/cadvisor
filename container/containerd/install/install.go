@@ -22,9 +22,13 @@ import (
 	"github.com/swarnimarun/cadvisor/container/containerd"
 )
 
+var Success = false
+
 func init() {
 	err := container.RegisterPlugin("containerd", containerd.NewPlugin())
 	if err != nil {
 		klog.Fatalf("Failed to register containerd plugin: %v", err)
-	}
+	} else {
+        Success = true
+    }
 }
