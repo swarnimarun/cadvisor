@@ -537,7 +537,7 @@ func (m *manager) AllContainers(query *info.ContainerInfoRequest) (map[string]in
                 defer m.containersLock.RUnlock()
                 // Get containers in a namespace.
                 for _, cont := range m.containers {
-                	containers[cont.Info.Name] = cont
+                	containers[cont.info.Name] = cont
                 }
         }()
         return m.containersInfo(containers, query)
