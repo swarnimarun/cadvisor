@@ -530,7 +530,7 @@ func (m *manager) GetContainerInfoV2(containerName string, options v2.RequestOpt
 }
 
 
-func (m *manager) AllContainers(query *info.ContainerInfoRequest) (*containerData, error) {
+func (m *manager) AllContainers(query *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error) {
 	containers := make(map[string]*containerData, len(m.containers))
 	func() {
 		m.containersLock.RLock()
