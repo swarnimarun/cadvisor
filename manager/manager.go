@@ -136,6 +136,8 @@ type Manager interface {
 	// Returns debugging information. Map of lines per category.
 	DebugInfo() map[string][]string
 
+	AllContainers(c *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error)
+	
 	AllContainerdContainers(c *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error)
 
 	AllCrioContainers(c *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error)
@@ -525,6 +527,20 @@ func (m *manager) GetContainerInfoV2(containerName string, options v2.RequestOpt
 	}
 
 	return infos, errs.OrNil()
+}
+
+
+func (m *manager) AllContainers(query *info.ContainerInfoRequest) (*containerData, error) {
+	containers := make(map[string]*containerData, len(m.containers))
+	func() {
+		m.containersLock.RLock()
+                defer m.containersLock.RUnlock()
+                // Get containers in a namespace.
+                for name, cont := range m.containers {
+                	containers[cont.info.Name] = cont
+                }
+        }()
+        return m.containersInfo(containers, query)
 }
 
 func (m *manager) containerDataToContainerInfo(cont *containerData, query *info.ContainerInfoRequest) (*info.ContainerInfo, error) {
