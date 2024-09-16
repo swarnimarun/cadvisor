@@ -25,10 +25,8 @@ import (
 var Success = false
 
 func init() {
-	err := container.RegisterPlugin("containerd", containerd.NewPlugin())
+	err := container.RegisterPlugin("containerd", containerd.NewPlugin(&Success))
 	if err != nil {
 		klog.Fatalf("Failed to register containerd plugin: %v", err)
-	} else {
-        Success = true
-    }
+	}
 }

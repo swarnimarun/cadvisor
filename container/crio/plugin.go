@@ -24,11 +24,11 @@ import (
 )
 
 // NewPlugin returns an implementation of container.Plugin suitable for passing to container.RegisterPlugin()
-func NewPlugin() container.Plugin {
-	return &plugin{}
+func NewPlugin(success *bool) container.Plugin {
+	return &plugin{success: success}
 }
 
-type plugin struct{}
+type plugin struct{ success *bool }
 
 func (p *plugin) InitializeFSContext(context *fs.Context) error {
 	crioClient, err := Client()
@@ -47,5 +47,6 @@ func (p *plugin) InitializeFSContext(context *fs.Context) error {
 
 func (p *plugin) Register(factory info.MachineInfoFactory, fsInfo fs.FsInfo, includedMetrics container.MetricSet) (watcher.ContainerWatcher, error) {
 	err := Register(factory, fsInfo, includedMetrics)
+	*p.success = err == nil
 	return nil, err
 }
