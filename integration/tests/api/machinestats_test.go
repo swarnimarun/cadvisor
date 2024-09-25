@@ -22,7 +22,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/swarnimarun/cadvisor/integration/framework"
-	"github.com/opencontainers/runc/libcontainer/cgroups"
+	"github.com/cedana/runc/libcontainer/cgroups"
 )
 
 func TestMachineStatsIsReturned(t *testing.T) {

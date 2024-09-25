@@ -20,7 +20,7 @@ import (
 
 	info "github.com/swarnimarun/cadvisor/info/v1"
 
-	"github.com/opencontainers/runc/libcontainer/cgroups"
+	"github.com/cedana/runc/libcontainer/cgroups"
 	"github.com/stretchr/testify/assert"
 	"k8s.io/klog/v2"
 )

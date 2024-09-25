@@ -28,8 +28,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/opencontainers/runc/libcontainer/cgroups"
-	"github.com/opencontainers/runc/libcontainer/intelrdt"
+	"github.com/cedana/runc/libcontainer/cgroups"
+	"github.com/cedana/runc/libcontainer/intelrdt"
 
 	"github.com/stretchr/testify/assert"
 )

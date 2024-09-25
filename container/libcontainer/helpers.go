@@ -19,13 +19,13 @@ import (
 
 	info "github.com/swarnimarun/cadvisor/info/v1"
 
-	"github.com/opencontainers/runc/libcontainer/cgroups"
+	"github.com/cedana/runc/libcontainer/cgroups"
 
 	"github.com/swarnimarun/cadvisor/container"
 
-	fs "github.com/opencontainers/runc/libcontainer/cgroups/fs"
-	fs2 "github.com/opencontainers/runc/libcontainer/cgroups/fs2"
-	configs "github.com/opencontainers/runc/libcontainer/configs"
+	fs "github.com/cedana/runc/libcontainer/cgroups/fs"
+	fs2 "github.com/cedana/runc/libcontainer/cgroups/fs2"
+	configs "github.com/cedana/runc/libcontainer/configs"
 	"k8s.io/klog/v2"
 )
 

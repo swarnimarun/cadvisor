@@ -31,7 +31,7 @@ import (
 	"github.com/swarnimarun/cadvisor/fs"
 	info "github.com/swarnimarun/cadvisor/info/v1"
 	"github.com/swarnimarun/cadvisor/zfs"
-	"github.com/opencontainers/runc/libcontainer/cgroups"
+	"github.com/cedana/runc/libcontainer/cgroups"
 
 	docker "github.com/docker/docker/client"
 	"golang.org/x/net/context"

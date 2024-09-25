@@ -24,7 +24,7 @@ import (
 	"github.com/swarnimarun/cadvisor/fs"
 	info "github.com/swarnimarun/cadvisor/info/v1"
 	"github.com/swarnimarun/cadvisor/machine"
-	"github.com/opencontainers/runc/libcontainer/cgroups"
+	"github.com/cedana/runc/libcontainer/cgroups"
 
 	"k8s.io/klog/v2"
 )
