@@ -22,8 +22,10 @@ import (
 	"github.com/google/cadvisor/container/crio"
 )
 
+var Success = false
+
 func init() {
-	err := container.RegisterPlugin("crio", crio.NewPlugin())
+	err := container.RegisterPlugin("crio", crio.NewPlugin(&Success))
 	if err != nil {
 		klog.Fatalf("Failed to register crio plugin: %v", err)
 	}

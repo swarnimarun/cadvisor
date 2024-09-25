@@ -143,6 +143,10 @@ type Manager interface {
 	AllPodmanContainers(c *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error)
 
 	PodmanContainer(containerName string, query *info.ContainerInfoRequest) (info.ContainerInfo, error)
+
+	AllContainerdContainers(c *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error)
+
+	AllCrioContainers(c *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error)
 }
 
 // Housekeeping configuration for the manager
@@ -1385,6 +1389,15 @@ func (m *manager) containersInfo(containers map[string]*containerData, query *in
 }
 
 func (m *manager) AllPodmanContainers(query *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error) {
+	containers := m.getAllNamespacedContainers(PodmanNamespace)
+	return m.containersInfo(containers, query)
+}
+
+func (m *manager) AllCrioContainers(query *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error) {
+	containers := m.getAllNamespacedContainers(PodmanNamespace)
+	return m.containersInfo(containers, query)
+}
+func (m *manager) AllContainerdContainers(query *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error) {
 	containers := m.getAllNamespacedContainers(PodmanNamespace)
 	return m.containersInfo(containers, query)
 }

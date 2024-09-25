@@ -22,8 +22,10 @@ import (
 	"github.com/google/cadvisor/container/containerd"
 )
 
+var Success bool
+
 func init() {
-	err := container.RegisterPlugin("containerd", containerd.NewPlugin())
+	err := container.RegisterPlugin("containerd", containerd.NewPlugin(&Success))
 	if err != nil {
 		klog.Fatalf("Failed to register containerd plugin: %v", err)
 	}
