@@ -5,7 +5,7 @@
 We have a Docker image that includes everything you need to get started. Simply run:
 
 ```
-VERSION=v0.35.0 # use the latest release version from https://github.com/google/cadvisor/releases
+VERSION=v0.35.0 # use the latest release version from https://github.com/swarnimarun/cadvisor/releases
 sudo docker run \
   --volume=/:/rootfs:ro \
   --volume=/var/run:/var/run:rw \
@@ -39,7 +39,7 @@ otherwise cAdvisor can not connect to docker daemon.
   --volume=/sys:/sys:ro \
   --volume=/var/lib/docker/:/var/lib/docker:ro \
   --volume=/dev/disk/:/dev/disk:ro \
-  --volume=$GOPATH/src/github.com/google/cadvisor/perf/testing:/etc/configs/perf \
+  --volume=$GOPATH/src/github.com/swarnimarun/cadvisor/perf/testing:/etc/configs/perf \
   --publish=8080:8080 \
   --device=/dev/kmsg \
   --security-opt seccomp=default.json \
@@ -85,7 +85,7 @@ google/cadvisor:latest
 
 ### Debian
 
-By default, Debian disables the memory cgroup which does not allow cAdvisor to gather memory stats. To enable the memory cgroup take a look at [these instructions](https://github.com/google/cadvisor/issues/432).
+By default, Debian disables the memory cgroup which does not allow cAdvisor to gather memory stats. To enable the memory cgroup take a look at [these instructions](https://github.com/swarnimarun/cadvisor/issues/432).
 
 ### LXC Docker exec driver
 

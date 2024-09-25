@@ -33,9 +33,9 @@ import (
 	"github.com/opencontainers/runc/libcontainer/cgroups/fs2"
 	"k8s.io/klog/v2"
 
-	"github.com/google/cadvisor/container"
-	"github.com/google/cadvisor/container/common"
-	info "github.com/google/cadvisor/info/v1"
+	"github.com/swarnimarun/cadvisor/container"
+	"github.com/swarnimarun/cadvisor/container/common"
+	info "github.com/swarnimarun/cadvisor/info/v1"
 )
 
 var (

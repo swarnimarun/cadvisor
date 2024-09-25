@@ -18,7 +18,7 @@ import (
 	"testing"
 	"time"
 
-	info "github.com/google/cadvisor/info/v1"
+	info "github.com/swarnimarun/cadvisor/info/v1"
 
 	"github.com/opencontainers/runc/libcontainer/cgroups"
 	"github.com/stretchr/testify/assert"
@@ -49,7 +49,7 @@ func checkCPUStats(t *testing.T, stat info.CpuStats) {
 	assert.NotEqual(0, stat.Usage.Total, "Total CPU usage should not be zero")
 
 	// PerCPU CPU usage is not supported in cgroupv2 (cpuacct.usage_percpu)
-	// https://github.com/google/cadvisor/issues/3065
+	// https://github.com/swarnimarun/cadvisor/issues/3065
 	if !cgroups.IsCgroup2UnifiedMode() {
 		assert.NotEmpty(stat.Usage.PerCpu, "Per-core usage should not be empty")
 

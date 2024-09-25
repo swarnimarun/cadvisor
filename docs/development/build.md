@@ -11,7 +11,7 @@ cAdvisor is written in the [Go](http://golang.org) programming language. If you 
 After setting up Go, you should be able to `go get` cAdvisor as expected (we use `-d` to only download):
 
 ```
-$ go get -d github.com/google/cadvisor
+$ go get -d github.com/swarnimarun/cadvisor
 ```
 
 ## Building from Source
@@ -19,13 +19,13 @@ $ go get -d github.com/google/cadvisor
 At this point you can build cAdvisor from the source folder:
 
 ```
-$GOPATH/src/github.com/google/cadvisor $ make build
+$GOPATH/src/github.com/swarnimarun/cadvisor $ make build
 ```
 
 or run only unit tests:
 
 ```
-$GOPATH/src/github.com/google/cadvisor $ make test
+$GOPATH/src/github.com/swarnimarun/cadvisor $ make test
 ```
 
 For integration tests, see the [integration testing](integration_testing.md) page.
@@ -41,7 +41,7 @@ Detailed information about building `libipmctl` can be found in the project's [R
 To enable `libipmctl` support `GO_FLAGS` variable must be set:
 
 ```
-$GOPATH/src/github.com/google/cadvisor $ GO_FLAGS="-tags=libipmctl,netgo" make build
+$GOPATH/src/github.com/swarnimarun/cadvisor $ GO_FLAGS="-tags=libipmctl,netgo" make build
 ```
 
 ### Perf Support
@@ -65,7 +65,7 @@ yum install libpfm libpfm-devel
 To enable `libpfm4` support `GO_FLAGS` variable must be set:
 
 ```
-$GOPATH/src/github.com/google/cadvisor $ GO_FLAGS="-tags=libpfm,netgo" make build
+$GOPATH/src/github.com/swarnimarun/cadvisor $ GO_FLAGS="-tags=libpfm,netgo" make build
 ```
 
 ## Running Built Binary
@@ -73,13 +73,13 @@ $GOPATH/src/github.com/google/cadvisor $ GO_FLAGS="-tags=libpfm,netgo" make buil
 Now you can run the built binary:
 
 ```
-$GOPATH/src/github.com/google/cadvisor $ sudo ./cadvisor
+$GOPATH/src/github.com/swarnimarun/cadvisor $ sudo ./cadvisor
 ```
 
 ### Perf Support
 
 It is required to include perf config (examplary config is available [here](../../perf/testing/perf-non-hardware.json)) to run cAdvisor with performance monitoring events:
 ```
-$GOPATH/src/github.com/google/cadvisor $ sudo ./cadvisor -perf_events_config=perf/testing/perf-non-hardware.json
+$GOPATH/src/github.com/swarnimarun/cadvisor $ sudo ./cadvisor -perf_events_config=perf/testing/perf-non-hardware.json
 
 ```

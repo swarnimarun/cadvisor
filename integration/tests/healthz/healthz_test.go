@@ -19,7 +19,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/google/cadvisor/integration/framework"
+	"github.com/swarnimarun/cadvisor/integration/framework"
 )
 
 func TestHealthzOk(t *testing.T) {

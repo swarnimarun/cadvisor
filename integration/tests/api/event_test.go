@@ -21,8 +21,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	info "github.com/google/cadvisor/info/v1"
-	"github.com/google/cadvisor/integration/framework"
+	info "github.com/swarnimarun/cadvisor/info/v1"
+	"github.com/swarnimarun/cadvisor/integration/framework"
 )
 
 func TestStreamingEventInformationIsReturned(t *testing.T) {

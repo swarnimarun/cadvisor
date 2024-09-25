@@ -31,8 +31,8 @@ function run_tests() {
   fi
 
   $CONTAINER_ENGINE run --rm \
-    -w /go/src/github.com/google/cadvisor \
-    -v ${PWD}:/go/src/github.com/google/cadvisor \
+    -w /go/src/github.com/swarnimarun/cadvisor \
+    -v ${PWD}:/go/src/github.com/swarnimarun/cadvisor \
     -e GO_FLAGS \
     golang:${GOLANG_VERSION} \
     bash -e -c "$BUILD_CMD"

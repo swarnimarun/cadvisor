@@ -19,7 +19,7 @@ RUN export DBG="-g -Wall" && \
 # ipmctl only supports Intel x86_64 processors.
 # https://github.com/intel/ipmctl/issues/163
 
-# Disable libipmctl due to https://github.com/google/cadvisor/issues/3482
+# Disable libipmctl due to https://github.com/swarnimarun/cadvisor/issues/3482
 #RUN if [ "$(uname --machine)" = "x86_64" ]; then \
     #git clone -b v02.00.00.3885 https://github.com/intel/ipmctl/ && \
     #cd ipmctl && \
@@ -29,7 +29,7 @@ RUN export DBG="-g -Wall" && \
     #make -j all && \
     #make install; fi
 
-WORKDIR /go/src/github.com/google/cadvisor
+WORKDIR /go/src/github.com/swarnimarun/cadvisor
 
 # Cache Golang Dependencies for faster incremental builds
 ADD go.mod go.sum ./
@@ -44,7 +44,7 @@ ARG VERSION
 # libipmctl only works on x86_64 CPUs.
 RUN export GO_TAGS="libpfm,netgo"; \
     if [ "$(uname --machine)" = "x86_64" ]; then \
-          # Disable libipmctl due to https://github.com/google/cadvisor/issues/3482
+          # Disable libipmctl due to https://github.com/swarnimarun/cadvisor/issues/3482
           #export GO_TAGS="$GO_TAGS,libipmctl"; \
           export GO_TAGS="$GO_TAGS"; \
     fi; \
@@ -61,7 +61,7 @@ RUN apk --no-cache add libc6-compat device-mapper findutils ndctl zfs && \
 # Grab cadvisor,libpfm4 and libipmctl from "build" container if they exist (libipmctl only works on amd64/x86_64).
 COPY --from=build /usr/local/lib/libpfm.so* /usr/local/lib/
 COPY --from=build /usr/local/lib/libipmctl.so* /usr/local/lib/
-COPY --from=build /go/src/github.com/google/cadvisor/_output/cadvisor /usr/bin/cadvisor
+COPY --from=build /go/src/github.com/swarnimarun/cadvisor/_output/cadvisor /usr/bin/cadvisor
 
 EXPOSE 8080
 

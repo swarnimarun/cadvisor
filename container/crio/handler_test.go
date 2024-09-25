@@ -20,9 +20,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/google/cadvisor/container"
-	"github.com/google/cadvisor/fs"
-	info "github.com/google/cadvisor/info/v1"
+	"github.com/swarnimarun/cadvisor/container"
+	"github.com/swarnimarun/cadvisor/fs"
+	info "github.com/swarnimarun/cadvisor/info/v1"
 )
 
 func TestHandler(t *testing.T) {

@@ -20,15 +20,15 @@ import (
 	"github.com/opencontainers/runc/libcontainer/cgroups"
 	"k8s.io/klog/v2"
 
-	"github.com/google/cadvisor/container"
-	"github.com/google/cadvisor/container/docker"
-	dockerutil "github.com/google/cadvisor/container/docker/utils"
-	"github.com/google/cadvisor/container/libcontainer"
-	"github.com/google/cadvisor/devicemapper"
-	"github.com/google/cadvisor/fs"
-	info "github.com/google/cadvisor/info/v1"
-	"github.com/google/cadvisor/watcher"
-	"github.com/google/cadvisor/zfs"
+	"github.com/swarnimarun/cadvisor/container"
+	"github.com/swarnimarun/cadvisor/container/docker"
+	dockerutil "github.com/swarnimarun/cadvisor/container/docker/utils"
+	"github.com/swarnimarun/cadvisor/container/libcontainer"
+	"github.com/swarnimarun/cadvisor/devicemapper"
+	"github.com/swarnimarun/cadvisor/fs"
+	info "github.com/swarnimarun/cadvisor/info/v1"
+	"github.com/swarnimarun/cadvisor/watcher"
+	"github.com/swarnimarun/cadvisor/zfs"
 )
 
 func NewPlugin() container.Plugin {

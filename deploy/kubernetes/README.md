@@ -4,14 +4,14 @@ cAdvisor uses [Kustomize](https://github.com/kubernetes-sigs/kustomize) to manag
 
 ## Deploy
 
-Pick a [cAdvisor release](https://github.com/google/cadvisor/releases)
+Pick a [cAdvisor release](https://github.com/swarnimarun/cadvisor/releases)
 ```
 VERSION=v0.42.0
 ```
 
 Deploy to Kubernetes cluster with [remote build](https://github.com/kubernetes-sigs/kustomize/blob/master/examples/remoteBuild.md):
 ```
-kustomize build "https://github.com/google/cadvisor/deploy/kubernetes/base?ref=${VERSION}" | kubectl apply -f -
+kustomize build "https://github.com/swarnimarun/cadvisor/deploy/kubernetes/base?ref=${VERSION}" | kubectl apply -f -
 ```
 
 ## Usage

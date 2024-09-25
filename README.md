@@ -1,6 +1,6 @@
 ![cAdvisor](logo.png "cAdvisor")
 
-![test status](https://github.com/google/cadvisor/workflows/Test/badge.svg)
+![test status](https://github.com/swarnimarun/cadvisor/workflows/Test/badge.svg)
 
 cAdvisor (Container Advisor) provides container users an understanding of the resource usage and performance characteristics of their running containers. It is a running daemon that collects, aggregates, processes, and exports information about running containers. Specifically, for each container it keeps resource isolation parameters, historical resource usage, histograms of complete historical resource usage and network statistics. This data is exported by container and machine-wide.
 
@@ -11,7 +11,7 @@ cAdvisor has native support for [Docker](https://github.com/docker/docker) conta
 To quickly tryout cAdvisor on your machine with Docker, we have a Docker image that includes everything you need to get started. You can run a single cAdvisor to monitor the whole machine. Simply run:
 
 ```
-VERSION=v0.49.1 # use the latest release version from https://github.com/google/cadvisor/releases
+VERSION=v0.49.1 # use the latest release version from https://github.com/swarnimarun/cadvisor/releases
 sudo docker run \
   --volume=/:/rootfs:ro \
   --volume=/var/run:/var/run:ro \

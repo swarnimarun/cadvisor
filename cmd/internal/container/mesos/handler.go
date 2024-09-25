@@ -18,11 +18,11 @@ package mesos
 import (
 	"fmt"
 
-	"github.com/google/cadvisor/container"
-	"github.com/google/cadvisor/container/common"
-	containerlibcontainer "github.com/google/cadvisor/container/libcontainer"
-	"github.com/google/cadvisor/fs"
-	info "github.com/google/cadvisor/info/v1"
+	"github.com/swarnimarun/cadvisor/container"
+	"github.com/swarnimarun/cadvisor/container/common"
+	containerlibcontainer "github.com/swarnimarun/cadvisor/container/libcontainer"
+	"github.com/swarnimarun/cadvisor/fs"
+	info "github.com/swarnimarun/cadvisor/info/v1"
 )
 
 type mesosContainerHandler struct {

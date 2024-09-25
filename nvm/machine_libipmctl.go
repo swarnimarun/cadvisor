@@ -24,7 +24,7 @@ import (
 	"fmt"
 	"sync"
 
-	info "github.com/google/cadvisor/info/v1"
+	info "github.com/swarnimarun/cadvisor/info/v1"
 
 	"k8s.io/klog/v2"
 )
@@ -122,7 +122,7 @@ func GetInfo() (info.NVMInfo, error) {
 	return nvmInfo, nil
 }
 
-// Finalize un-initializes libipmctl. See https://github.com/google/cadvisor/issues/2457.
+// Finalize un-initializes libipmctl. See https://github.com/swarnimarun/cadvisor/issues/2457.
 func Finalize() {
 	nvmLibMutex.Lock()
 	defer nvmLibMutex.Unlock()

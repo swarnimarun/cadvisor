@@ -23,9 +23,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	info "github.com/google/cadvisor/info/v1"
-	"github.com/google/cadvisor/utils/sysfs"
-	"github.com/google/cadvisor/utils/sysfs/fakesysfs"
+	info "github.com/swarnimarun/cadvisor/info/v1"
+	"github.com/swarnimarun/cadvisor/utils/sysfs"
+	"github.com/swarnimarun/cadvisor/utils/sysfs/fakesysfs"
 )
 
 func TestGetHugePagesInfo(t *testing.T) {

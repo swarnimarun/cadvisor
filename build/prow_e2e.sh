@@ -38,5 +38,5 @@ fi
 make all
 
 # compile integration tests so they can be run without go installed
-go test -c github.com/google/cadvisor/integration/tests/api
-go test -c github.com/google/cadvisor/integration/tests/healthz
+go test -c github.com/swarnimarun/cadvisor/integration/tests/api
+go test -c github.com/swarnimarun/cadvisor/integration/tests/healthz

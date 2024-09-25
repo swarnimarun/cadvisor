@@ -25,7 +25,7 @@ BUILD_DATE=${BUILD_DATE:-$( date +%Y%m%d-%H:%M:%S )}
 VERBOSE=${VERBOSE:-}
 OUTPUT_NAME_WITH_ARCH=${OUTPUT_NAME_WITH_ARCH:-"false"}
 
-repo_path="github.com/google/cadvisor"
+repo_path="github.com/swarnimarun/cadvisor"
 
 version=${VERSION:-$( git describe --tags --dirty --abbrev=14 | sed -E 's/-([0-9]+)-g/.\1+/' )}
 revision=$( git rev-parse --short HEAD 2> /dev/null || echo 'unknown' )
@@ -59,7 +59,7 @@ if [ "${OUTPUT_NAME_WITH_ARCH}" = "true" ] ; then
   output_file="${output_file}-${version}-${GOOS}-${GOARCH}"
 fi
 
-# Since github.com/google/cadvisor/cmd is a submodule, we must build from inside that directory
+# Since github.com/swarnimarun/cadvisor/cmd is a submodule, we must build from inside that directory
 pushd cmd > /dev/null
   go build ${GO_FLAGS} -ldflags "${ldflags}" -o "${output_file}" "${repo_path}/cmd"
 popd > /dev/null

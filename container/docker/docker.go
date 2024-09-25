@@ -25,9 +25,9 @@ import (
 	dockersystem "github.com/docker/docker/api/types/system"
 	"golang.org/x/net/context"
 
-	"github.com/google/cadvisor/container/docker/utils"
-	v1 "github.com/google/cadvisor/info/v1"
-	"github.com/google/cadvisor/machine"
+	"github.com/swarnimarun/cadvisor/container/docker/utils"
+	v1 "github.com/swarnimarun/cadvisor/info/v1"
+	"github.com/swarnimarun/cadvisor/machine"
 )
 
 var dockerTimeout = 10 * time.Second

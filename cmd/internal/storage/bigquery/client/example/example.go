@@ -21,7 +21,7 @@ import (
 
 	"github.com/SeanDolphin/bqschema"
 
-	"github.com/google/cadvisor/cmd/internal/storage/bigquery/client"
+	"github.com/swarnimarun/cadvisor/cmd/internal/storage/bigquery/client"
 )
 
 type container struct {

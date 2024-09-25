@@ -27,9 +27,9 @@ import (
 	dockersystem "github.com/docker/docker/api/types/system"
 	"github.com/pkg/errors"
 
-	"github.com/google/cadvisor/container/docker"
-	"github.com/google/cadvisor/container/docker/utils"
-	v1 "github.com/google/cadvisor/info/v1"
+	"github.com/swarnimarun/cadvisor/container/docker"
+	"github.com/swarnimarun/cadvisor/container/docker/utils"
+	v1 "github.com/swarnimarun/cadvisor/info/v1"
 )
 
 const (

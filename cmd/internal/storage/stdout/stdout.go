@@ -20,8 +20,8 @@ import (
 	"strconv"
 	"time"
 
-	info "github.com/google/cadvisor/info/v1"
-	"github.com/google/cadvisor/storage"
+	info "github.com/swarnimarun/cadvisor/info/v1"
+	"github.com/swarnimarun/cadvisor/storage"
 )
 
 func init() {
@@ -36,7 +36,7 @@ const (
 	serTimestamp string = "timestamp"
 	// Cumulative CPU usage
 	// To be deprecated in 0.39
-	// https://github.com/google/cadvisor/issues/2637
+	// https://github.com/swarnimarun/cadvisor/issues/2637
 	colCPUCumulativeUsage string = "cpu_cumulative_usage"
 	// Cumulative CPU usage
 	serCPUUsageTotal  string = "cpu_usage_total"

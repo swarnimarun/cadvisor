@@ -1,15 +1,15 @@
-module github.com/google/cadvisor/cmd
+module github.com/swarnimarun/cadvisor/cmd
 
 go 1.21
 
 // Record that the cmd module requires the cadvisor library module.
-// The github.com/google/cadvisor/cmd module is built using the Makefile
-// from a clone of the github.com/google/cadvisor repository, so we
+// The github.com/swarnimarun/cadvisor/cmd module is built using the Makefile
+// from a clone of the github.com/swarnimarun/cadvisor repository, so we
 // always use the relative local source rather than specifying a module version.
-require github.com/google/cadvisor v0.0.0
+require github.com/swarnimarun/cadvisor v0.0.0
 
-// Use the relative local source of the github.com/google/cadvisor library to build
-replace github.com/google/cadvisor => ../
+// Use the relative local source of the github.com/swarnimarun/cadvisor library to build
+replace github.com/swarnimarun/cadvisor => ../
 
 require (
 	github.com/Rican7/retry v0.3.1
