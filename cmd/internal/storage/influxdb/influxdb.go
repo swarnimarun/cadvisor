@@ -22,9 +22,9 @@ import (
 	"sync"
 	"time"
 
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	"github.com/swarnimarun/cadvisor/storage"
-	"github.com/swarnimarun/cadvisor/version"
+	info "github.com/cedana/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/storage"
+	"github.com/cedana/cadvisor/version"
 
 	influxdb "github.com/influxdb/influxdb/client"
 )

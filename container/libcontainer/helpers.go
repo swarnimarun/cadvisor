@@ -17,11 +17,11 @@ package libcontainer
 import (
 	"fmt"
 
-	info "github.com/swarnimarun/cadvisor/info/v1"
+	info "github.com/cedana/cadvisor/info/v1"
 
 	"github.com/cedana/runc/libcontainer/cgroups"
 
-	"github.com/swarnimarun/cadvisor/container"
+	"github.com/cedana/cadvisor/container"
 
 	fs "github.com/cedana/runc/libcontainer/cgroups/fs"
 	fs2 "github.com/cedana/runc/libcontainer/cgroups/fs2"

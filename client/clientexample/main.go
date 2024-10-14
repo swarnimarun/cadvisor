@@ -17,8 +17,8 @@ package main
 import (
 	"flag"
 
-	"github.com/swarnimarun/cadvisor/client"
-	info "github.com/swarnimarun/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/client"
+	info "github.com/cedana/cadvisor/info/v1"
 
 	"k8s.io/klog/v2"
 )

@@ -16,7 +16,7 @@
 package containerd
 
 import (
-	"github.com/swarnimarun/cadvisor/container/containerd/namespaces"
+	"github.com/cedana/cadvisor/container/containerd/namespaces"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )

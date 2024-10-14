@@ -27,8 +27,8 @@ import (
 	"github.com/prometheus/common/expfmt"
 	"github.com/prometheus/common/model"
 
-	"github.com/swarnimarun/cadvisor/container"
-	v1 "github.com/swarnimarun/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/container"
+	v1 "github.com/cedana/cadvisor/info/v1"
 )
 
 type PrometheusCollector struct {

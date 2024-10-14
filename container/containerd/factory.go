@@ -24,11 +24,11 @@ import (
 	"golang.org/x/net/context"
 	"k8s.io/klog/v2"
 
-	"github.com/swarnimarun/cadvisor/container"
-	"github.com/swarnimarun/cadvisor/container/libcontainer"
-	"github.com/swarnimarun/cadvisor/fs"
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	"github.com/swarnimarun/cadvisor/watcher"
+	"github.com/cedana/cadvisor/container"
+	"github.com/cedana/cadvisor/container/libcontainer"
+	"github.com/cedana/cadvisor/fs"
+	info "github.com/cedana/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/watcher"
 )
 
 var ArgContainerdEndpoint = flag.String("containerd", "/run/containerd/containerd.sock", "containerd endpoint")

@@ -17,8 +17,8 @@ package metrics
 import (
 	"time"
 
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	v2 "github.com/swarnimarun/cadvisor/info/v2"
+	info "github.com/cedana/cadvisor/info/v1"
+	v2 "github.com/cedana/cadvisor/info/v2"
 )
 
 // metricValue describes a single metric value for a given set of label values

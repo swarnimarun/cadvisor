@@ -19,12 +19,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/swarnimarun/cadvisor/container"
-	"github.com/swarnimarun/cadvisor/container/common"
-	"github.com/swarnimarun/cadvisor/container/libcontainer"
-	"github.com/swarnimarun/cadvisor/fs"
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	watch "github.com/swarnimarun/cadvisor/watcher"
+	"github.com/cedana/cadvisor/container"
+	"github.com/cedana/cadvisor/container/common"
+	"github.com/cedana/cadvisor/container/libcontainer"
+	"github.com/cedana/cadvisor/fs"
+	info "github.com/cedana/cadvisor/info/v1"
+	watch "github.com/cedana/cadvisor/watcher"
 
 	"k8s.io/klog/v2"
 )

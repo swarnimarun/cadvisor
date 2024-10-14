@@ -20,15 +20,15 @@ import (
 	"github.com/cedana/runc/libcontainer/cgroups"
 	"k8s.io/klog/v2"
 
-	"github.com/swarnimarun/cadvisor/container"
-	"github.com/swarnimarun/cadvisor/container/docker"
-	dockerutil "github.com/swarnimarun/cadvisor/container/docker/utils"
-	"github.com/swarnimarun/cadvisor/container/libcontainer"
-	"github.com/swarnimarun/cadvisor/devicemapper"
-	"github.com/swarnimarun/cadvisor/fs"
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	"github.com/swarnimarun/cadvisor/watcher"
-	"github.com/swarnimarun/cadvisor/zfs"
+	"github.com/cedana/cadvisor/container"
+	"github.com/cedana/cadvisor/container/docker"
+	dockerutil "github.com/cedana/cadvisor/container/docker/utils"
+	"github.com/cedana/cadvisor/container/libcontainer"
+	"github.com/cedana/cadvisor/devicemapper"
+	"github.com/cedana/cadvisor/fs"
+	info "github.com/cedana/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/watcher"
+	"github.com/cedana/cadvisor/zfs"
 )
 
 func NewPlugin() container.Plugin {

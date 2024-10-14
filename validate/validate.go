@@ -25,9 +25,9 @@ import (
 	"path"
 	"strings"
 
-	"github.com/swarnimarun/cadvisor/container/docker"
-	"github.com/swarnimarun/cadvisor/manager"
-	"github.com/swarnimarun/cadvisor/utils"
+	"github.com/cedana/cadvisor/container/docker"
+	"github.com/cedana/cadvisor/manager"
+	"github.com/cedana/cadvisor/utils"
 
 	"github.com/cedana/runc/libcontainer/cgroups"
 )

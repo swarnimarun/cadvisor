@@ -20,7 +20,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/swarnimarun/cadvisor/container/docker"
+	"github.com/cedana/cadvisor/container/docker"
 )
 
 const (

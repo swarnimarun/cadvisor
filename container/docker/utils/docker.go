@@ -23,7 +23,7 @@ import (
 
 	dockerimage "github.com/docker/docker/api/types/image"
 	dockersystem "github.com/docker/docker/api/types/system"
-	v1 "github.com/swarnimarun/cadvisor/info/v1"
+	v1 "github.com/cedana/cadvisor/info/v1"
 )
 
 const (

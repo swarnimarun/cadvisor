@@ -21,10 +21,10 @@ import (
 	"path"
 	"time"
 
-	dockerutil "github.com/swarnimarun/cadvisor/container/docker/utils"
-	"github.com/swarnimarun/cadvisor/container/podman"
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	"github.com/swarnimarun/cadvisor/manager"
+	dockerutil "github.com/cedana/cadvisor/container/docker/utils"
+	"github.com/cedana/cadvisor/container/podman"
+	info "github.com/cedana/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/manager"
 
 	"k8s.io/klog/v2"
 )

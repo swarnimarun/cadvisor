@@ -20,7 +20,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/swarnimarun/cadvisor/container"
+	"github.com/cedana/cadvisor/container"
 )
 
 func TestTcpMetricsAreDisabledByDefault(t *testing.T) {

@@ -25,7 +25,7 @@ BUILD_DATE=${BUILD_DATE:-$( date +%Y%m%d-%H:%M:%S )}
 VERBOSE=${VERBOSE:-}
 OUTPUT_NAME_WITH_ARCH=${OUTPUT_NAME_WITH_ARCH:-"false"}
 
-repo_path="github.com/swarnimarun/cadvisor"
+repo_path="github.com/cedana/cadvisor"
 
 version=${VERSION:-$( git describe --tags --dirty --abbrev=14 | sed -E 's/-([0-9]+)-g/.\1+/' )}
 revision=$( git rev-parse --short HEAD 2> /dev/null || echo 'unknown' )

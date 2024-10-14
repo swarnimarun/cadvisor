@@ -15,8 +15,8 @@
 package testing
 
 import (
-	"github.com/swarnimarun/cadvisor/container"
-	info "github.com/swarnimarun/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/container"
+	info "github.com/cedana/cadvisor/info/v1"
 
 	"github.com/stretchr/testify/mock"
 )

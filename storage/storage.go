@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"sort"
 
-	info "github.com/swarnimarun/cadvisor/info/v1"
+	info "github.com/cedana/cadvisor/info/v1"
 )
 
 type StorageDriver interface {

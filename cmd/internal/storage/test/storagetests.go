@@ -19,8 +19,8 @@ import (
 	"testing"
 	"time"
 
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	"github.com/swarnimarun/cadvisor/storage"
+	info "github.com/cedana/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/storage"
 )
 
 type TestStorageDriver interface {

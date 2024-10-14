@@ -24,10 +24,10 @@ import (
 
 	inotify "k8s.io/utils/inotify"
 
-	"github.com/swarnimarun/cadvisor/container"
-	"github.com/swarnimarun/cadvisor/container/common"
-	"github.com/swarnimarun/cadvisor/container/libcontainer"
-	"github.com/swarnimarun/cadvisor/watcher"
+	"github.com/cedana/cadvisor/container"
+	"github.com/cedana/cadvisor/container/common"
+	"github.com/cedana/cadvisor/container/libcontainer"
+	"github.com/cedana/cadvisor/watcher"
 
 	"k8s.io/klog/v2"
 )

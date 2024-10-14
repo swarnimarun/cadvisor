@@ -26,8 +26,8 @@ import (
 	"strconv"
 	"strings"
 
-	v1 "github.com/swarnimarun/cadvisor/info/v1"
-	v2 "github.com/swarnimarun/cadvisor/info/v2"
+	v1 "github.com/cedana/cadvisor/info/v1"
+	v2 "github.com/cedana/cadvisor/info/v2"
 )
 
 // Client represents the base URL for a cAdvisor client.

@@ -20,7 +20,7 @@ import (
 
 	"k8s.io/klog/v2"
 
-	v1 "github.com/swarnimarun/cadvisor/info/v1"
+	v1 "github.com/cedana/cadvisor/info/v1"
 )
 
 func machineFsStatsFromV1(fsStats []v1.FsStats) []MachineFsStats {

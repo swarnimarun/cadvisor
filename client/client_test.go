@@ -25,8 +25,8 @@ import (
 	"testing"
 	"time"
 
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	itest "github.com/swarnimarun/cadvisor/info/v1/test"
+	info "github.com/cedana/cadvisor/info/v1"
+	itest "github.com/cedana/cadvisor/info/v1/test"
 
 	"github.com/stretchr/testify/assert"
 )

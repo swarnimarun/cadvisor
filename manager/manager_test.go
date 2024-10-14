@@ -23,23 +23,23 @@ import (
 	"testing"
 	"time"
 
-	"github.com/swarnimarun/cadvisor/cache/memory"
-	"github.com/swarnimarun/cadvisor/container"
-	containertest "github.com/swarnimarun/cadvisor/container/testing"
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	itest "github.com/swarnimarun/cadvisor/info/v1/test"
-	v2 "github.com/swarnimarun/cadvisor/info/v2"
-	"github.com/swarnimarun/cadvisor/utils/sysfs/fakesysfs"
+	"github.com/cedana/cadvisor/cache/memory"
+	"github.com/cedana/cadvisor/container"
+	containertest "github.com/cedana/cadvisor/container/testing"
+	info "github.com/cedana/cadvisor/info/v1"
+	itest "github.com/cedana/cadvisor/info/v1/test"
+	v2 "github.com/cedana/cadvisor/info/v2"
+	"github.com/cedana/cadvisor/utils/sysfs/fakesysfs"
 
 	"github.com/stretchr/testify/assert"
 	clock "k8s.io/utils/clock/testing"
 
 	// install all the container runtimes included in the library version for testing.
 	// as these are moved to cmd/internal/container, remove them from here.
-	_ "github.com/swarnimarun/cadvisor/container/containerd/install"
-	_ "github.com/swarnimarun/cadvisor/container/crio/install"
-	_ "github.com/swarnimarun/cadvisor/container/docker/install"
-	_ "github.com/swarnimarun/cadvisor/container/systemd/install"
+	_ "github.com/cedana/cadvisor/container/containerd/install"
+	_ "github.com/cedana/cadvisor/container/crio/install"
+	_ "github.com/cedana/cadvisor/container/docker/install"
+	_ "github.com/cedana/cadvisor/container/systemd/install"
 )
 
 // TODO(vmarmol): Refactor these tests.

@@ -1,4 +1,4 @@
-module github.com/swarnimarun/cadvisor
+module github.com/cedana/cadvisor
 
 go 1.21
 

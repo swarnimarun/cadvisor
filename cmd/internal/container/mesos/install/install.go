@@ -18,8 +18,8 @@ package install
 import (
 	"k8s.io/klog/v2"
 
-	"github.com/swarnimarun/cadvisor/cmd/internal/container/mesos"
-	"github.com/swarnimarun/cadvisor/container"
+	"github.com/cedana/cadvisor/cmd/internal/container/mesos"
+	"github.com/cedana/cadvisor/container"
 )
 
 func init() {

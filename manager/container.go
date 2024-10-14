@@ -30,13 +30,13 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/swarnimarun/cadvisor/cache/memory"
-	"github.com/swarnimarun/cadvisor/container"
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	v2 "github.com/swarnimarun/cadvisor/info/v2"
-	"github.com/swarnimarun/cadvisor/stats"
-	"github.com/swarnimarun/cadvisor/summary"
-	"github.com/swarnimarun/cadvisor/utils/cpuload"
+	"github.com/cedana/cadvisor/cache/memory"
+	"github.com/cedana/cadvisor/container"
+	info "github.com/cedana/cadvisor/info/v1"
+	v2 "github.com/cedana/cadvisor/info/v2"
+	"github.com/cedana/cadvisor/stats"
+	"github.com/cedana/cadvisor/summary"
+	"github.com/cedana/cadvisor/utils/cpuload"
 
 	"github.com/docker/go-units"
 

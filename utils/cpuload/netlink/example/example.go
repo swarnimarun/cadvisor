@@ -17,7 +17,7 @@ package main
 import (
 	"log"
 
-	"github.com/swarnimarun/cadvisor/utils/cpuload/netlink"
+	"github.com/cedana/cadvisor/utils/cpuload/netlink"
 )
 
 func main() {

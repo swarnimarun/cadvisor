@@ -14,7 +14,7 @@
 
 package cache
 
-import info "github.com/swarnimarun/cadvisor/info/v1"
+import info "github.com/cedana/cadvisor/info/v1"
 
 type Cache interface {
 	// Add a ContainerStats for the specified container.

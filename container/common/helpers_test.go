@@ -25,9 +25,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/swarnimarun/cadvisor/container"
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	v2 "github.com/swarnimarun/cadvisor/info/v2"
+	"github.com/cedana/cadvisor/container"
+	info "github.com/cedana/cadvisor/info/v1"
+	v2 "github.com/cedana/cadvisor/info/v2"
 )
 
 func BenchmarkListDirectories(b *testing.B) {

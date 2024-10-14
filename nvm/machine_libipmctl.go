@@ -24,7 +24,7 @@ import (
 	"fmt"
 	"sync"
 
-	info "github.com/swarnimarun/cadvisor/info/v1"
+	info "github.com/cedana/cadvisor/info/v1"
 
 	"k8s.io/klog/v2"
 )

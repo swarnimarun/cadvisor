@@ -20,8 +20,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/swarnimarun/cadvisor/events"
-	info "github.com/swarnimarun/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/events"
+	info "github.com/cedana/cadvisor/info/v1"
 
 	"github.com/stretchr/testify/assert"
 )

@@ -22,10 +22,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/swarnimarun/cadvisor/container/docker"
-	dockerutil "github.com/swarnimarun/cadvisor/container/docker/utils"
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	"github.com/swarnimarun/cadvisor/manager"
+	"github.com/cedana/cadvisor/container/docker"
+	dockerutil "github.com/cedana/cadvisor/container/docker/utils"
+	info "github.com/cedana/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/manager"
 
 	"k8s.io/klog/v2"
 )

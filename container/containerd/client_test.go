@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/swarnimarun/cadvisor/container/containerd/containers"
+	"github.com/cedana/cadvisor/container/containerd/containers"
 )
 
 type containerdClientMock struct {

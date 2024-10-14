@@ -18,8 +18,8 @@ import (
 	"os"
 	"strings"
 
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	"github.com/swarnimarun/cadvisor/utils/cloudinfo"
+	info "github.com/cedana/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/utils/cloudinfo"
 )
 
 const (

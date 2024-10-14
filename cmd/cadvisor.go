@@ -24,19 +24,19 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/swarnimarun/cadvisor/container"
-	v1 "github.com/swarnimarun/cadvisor/info/v1"
-	"github.com/swarnimarun/cadvisor/manager"
-	"github.com/swarnimarun/cadvisor/utils/sysfs"
-	"github.com/swarnimarun/cadvisor/version"
+	"github.com/cedana/cadvisor/container"
+	v1 "github.com/cedana/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/manager"
+	"github.com/cedana/cadvisor/utils/sysfs"
+	"github.com/cedana/cadvisor/version"
 
 	// Register container providers
-	_ "github.com/swarnimarun/cadvisor/cmd/internal/container/install"
+	_ "github.com/cedana/cadvisor/cmd/internal/container/install"
 
 	// Register CloudProviders
-	_ "github.com/swarnimarun/cadvisor/utils/cloudinfo/aws"
-	_ "github.com/swarnimarun/cadvisor/utils/cloudinfo/azure"
-	_ "github.com/swarnimarun/cadvisor/utils/cloudinfo/gce"
+	_ "github.com/cedana/cadvisor/utils/cloudinfo/aws"
+	_ "github.com/cedana/cadvisor/utils/cloudinfo/azure"
+	_ "github.com/cedana/cadvisor/utils/cloudinfo/gce"
 
 	"k8s.io/klog/v2"
 )

@@ -21,7 +21,7 @@ import (
 	specs "github.com/opencontainers/runtime-spec/specs-go"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/swarnimarun/cadvisor/container/containerd/containers"
+	"github.com/cedana/cadvisor/container/containerd/containers"
 )
 
 func TestIsContainerName(t *testing.T) {

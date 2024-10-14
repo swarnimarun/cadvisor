@@ -18,8 +18,8 @@ import (
 	"errors"
 	"time"
 
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	v2 "github.com/swarnimarun/cadvisor/info/v2"
+	info "github.com/cedana/cadvisor/info/v1"
+	v2 "github.com/cedana/cadvisor/info/v2"
 )
 
 type testSubcontainersInfoProvider struct{}

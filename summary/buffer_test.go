@@ -18,7 +18,7 @@ import (
 	"reflect"
 	"testing"
 
-	info "github.com/swarnimarun/cadvisor/info/v2"
+	info "github.com/cedana/cadvisor/info/v2"
 )
 
 func createSample(i uint64) info.Usage {

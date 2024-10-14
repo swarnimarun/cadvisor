@@ -20,7 +20,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/swarnimarun/cadvisor/fs"
+	"github.com/cedana/cadvisor/fs"
 
 	"k8s.io/klog/v2"
 )

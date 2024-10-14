@@ -21,8 +21,8 @@ import (
 	"sync"
 	"time"
 
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	storage "github.com/swarnimarun/cadvisor/storage"
+	info "github.com/cedana/cadvisor/info/v1"
+	storage "github.com/cedana/cadvisor/storage"
 
 	"gopkg.in/olivere/elastic.v2"
 )

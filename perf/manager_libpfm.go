@@ -22,9 +22,9 @@ import (
 	"fmt"
 	"os"
 
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	"github.com/swarnimarun/cadvisor/stats"
-	"github.com/swarnimarun/cadvisor/utils/sysinfo"
+	info "github.com/cedana/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/stats"
+	"github.com/cedana/cadvisor/utils/sysinfo"
 )
 
 type manager struct {

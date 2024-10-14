@@ -20,11 +20,11 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/swarnimarun/cadvisor/container"
-	"github.com/swarnimarun/cadvisor/container/libcontainer"
-	"github.com/swarnimarun/cadvisor/fs"
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	"github.com/swarnimarun/cadvisor/watcher"
+	"github.com/cedana/cadvisor/container"
+	"github.com/cedana/cadvisor/container/libcontainer"
+	"github.com/cedana/cadvisor/fs"
+	info "github.com/cedana/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/watcher"
 
 	"k8s.io/klog/v2"
 )

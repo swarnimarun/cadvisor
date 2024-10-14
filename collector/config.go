@@ -19,7 +19,7 @@ import (
 
 	"encoding/json"
 
-	v1 "github.com/swarnimarun/cadvisor/info/v1"
+	v1 "github.com/cedana/cadvisor/info/v1"
 )
 
 type Config struct {

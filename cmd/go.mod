@@ -1,4 +1,4 @@
-module github.com/swarnimarun/cadvisor/cmd
+module github.com/cedana/cadvisor/cmd
 
 go 1.21
 
@@ -6,10 +6,10 @@ go 1.21
 // The github.com/google/cadvisor/cmd module is built using the Makefile
 // from a clone of the github.com/google/cadvisor repository, so we
 // always use the relative local source rather than specifying a module version.
-require github.com/swarnimarun/cadvisor v0.0.0
+require github.com/cedana/cadvisor v0.0.0
 
 // Use the relative local source of the github.com/google/cadvisor library to build
-replace github.com/swarnimarun/cadvisor => ../
+replace github.com/cedana/cadvisor => ../
 
 require (
 	github.com/Rican7/retry v0.3.1

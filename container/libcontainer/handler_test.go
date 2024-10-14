@@ -22,7 +22,7 @@ import (
 	"github.com/cedana/runc/libcontainer/cgroups"
 	"github.com/stretchr/testify/assert"
 
-	info "github.com/swarnimarun/cadvisor/info/v1"
+	info "github.com/cedana/cadvisor/info/v1"
 )
 
 func TestScanInterfaceStats(t *testing.T) {

@@ -17,9 +17,9 @@ package bigquery
 import (
 	"os"
 
-	"github.com/swarnimarun/cadvisor/cmd/internal/storage/bigquery/client"
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	"github.com/swarnimarun/cadvisor/storage"
+	"github.com/cedana/cadvisor/cmd/internal/storage/bigquery/client"
+	info "github.com/cedana/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/storage"
 
 	bigquery "google.golang.org/api/bigquery/v2"
 )

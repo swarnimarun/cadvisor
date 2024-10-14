@@ -24,8 +24,8 @@ import (
 	"github.com/docker/docker/api/types/container"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/swarnimarun/cadvisor/fs"
-	info "github.com/swarnimarun/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/fs"
+	info "github.com/cedana/cadvisor/info/v1"
 )
 
 func TestStorageDirDetectionWithOldVersions(t *testing.T) {

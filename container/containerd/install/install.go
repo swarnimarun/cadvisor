@@ -18,8 +18,8 @@ package install
 import (
 	"k8s.io/klog/v2"
 
-	"github.com/swarnimarun/cadvisor/container"
-	"github.com/swarnimarun/cadvisor/container/containerd"
+	"github.com/cedana/cadvisor/container"
+	"github.com/cedana/cadvisor/container/containerd"
 )
 
 var Success = false

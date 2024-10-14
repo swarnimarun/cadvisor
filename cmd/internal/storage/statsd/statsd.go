@@ -17,9 +17,9 @@ package statsd
 import (
 	"strconv"
 
-	client "github.com/swarnimarun/cadvisor/cmd/internal/storage/statsd/client"
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	"github.com/swarnimarun/cadvisor/storage"
+	client "github.com/cedana/cadvisor/cmd/internal/storage/statsd/client"
+	info "github.com/cedana/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/storage"
 )
 
 func init() {

@@ -28,9 +28,9 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/sys/unix"
 
-	"github.com/swarnimarun/cadvisor/container"
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	"github.com/swarnimarun/cadvisor/utils"
+	"github.com/cedana/cadvisor/container"
+	info "github.com/cedana/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/utils"
 
 	"k8s.io/klog/v2"
 )

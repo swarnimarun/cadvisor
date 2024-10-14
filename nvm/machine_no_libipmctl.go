@@ -20,7 +20,7 @@ package nvm
 import (
 	"k8s.io/klog/v2"
 
-	info "github.com/swarnimarun/cadvisor/info/v1"
+	info "github.com/cedana/cadvisor/info/v1"
 )
 
 // GetInfo returns information specific for non-volatile memory modules.

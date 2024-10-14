@@ -21,8 +21,8 @@ import (
 	"sync"
 	"time"
 
-	info "github.com/swarnimarun/cadvisor/info/v1"
-	"github.com/swarnimarun/cadvisor/utils"
+	info "github.com/cedana/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/utils"
 
 	"k8s.io/klog/v2"
 )

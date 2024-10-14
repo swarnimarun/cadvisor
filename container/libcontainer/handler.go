@@ -33,9 +33,9 @@ import (
 	"github.com/cedana/runc/libcontainer/cgroups/fs2"
 	"k8s.io/klog/v2"
 
-	"github.com/swarnimarun/cadvisor/container"
-	"github.com/swarnimarun/cadvisor/container/common"
-	info "github.com/swarnimarun/cadvisor/info/v1"
+	"github.com/cedana/cadvisor/container"
+	"github.com/cedana/cadvisor/container/common"
+	info "github.com/cedana/cadvisor/info/v1"
 )
 
 var (

@@ -15,7 +15,7 @@
 package test
 
 import (
-	info "github.com/swarnimarun/cadvisor/info/v1"
+	info "github.com/cedana/cadvisor/info/v1"
 
 	"github.com/stretchr/testify/mock"
 )
