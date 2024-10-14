@@ -16,7 +16,6 @@
 package manager
 
 import (
-	"flag"
 	"fmt"
 	"os"
 	"path"
@@ -47,12 +46,12 @@ import (
 	"k8s.io/utils/clock"
 )
 
-var globalHousekeepingInterval = flag.Duration("global_housekeeping_interval", 1*time.Minute, "Interval between global housekeepings")
-var updateMachineInfoInterval = flag.Duration("update_machine_info_interval", 5*time.Minute, "Interval between machine info updates.")
-var logCadvisorUsage = flag.Bool("log_cadvisor_usage", false, "Whether to log the usage of the cAdvisor container")
-var eventStorageAgeLimit = flag.String("event_storage_age_limit", "default=24h", "Max length of time for which to store events (per type). Value is a comma separated list of key values, where the keys are event types (e.g.: creation, oom) or \"default\" and the value is a duration. Default is applied to all non-specified event types")
-var eventStorageEventLimit = flag.String("event_storage_event_limit", "default=100000", "Max number of events to store (per type). Value is a comma separated list of key values, where the keys are event types (e.g.: creation, oom) or \"default\" and the value is an integer. Default is applied to all non-specified event types")
-var applicationMetricsCountLimit = flag.Int("application_metrics_count_limit", 100, "Max number of application metrics to store (per container)")
+var globalHousekeepingInterval = 1 * time.Minute
+var updateMachineInfoInterval = 5 * time.Minute
+var logCadvisorUsage = false
+var eventStorageAgeLimit = "default=24h"
+var eventStorageEventLimit = "default=100000"
+var applicationMetricsCountLimit = 100
 
 // The namespace under which aliases are unique.
 const (
@@ -60,9 +59,12 @@ const (
 	PodmanNamespace = "podman"
 )
 
+var minute = 60 * time.Second
+var allowDynamic = true
+
 var HousekeepingConfigFlags = HousekeepingConfig{
-	flag.Duration("max_housekeeping_interval", 60*time.Second, "Largest interval to allow between container housekeepings"),
-	flag.Bool("allow_dynamic_housekeeping", true, "Whether to allow the housekeeping interval to be dynamic"),
+	&minute,
+	&allowDynamic,
 }
 
 // The Manager interface defines operations for starting a manager and getting
@@ -137,7 +139,7 @@ type Manager interface {
 	DebugInfo() map[string][]string
 
 	AllContainers(c *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error)
-	
+
 	AllContainerdContainers(c *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error)
 
 	AllCrioContainers(c *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error)
@@ -359,7 +361,7 @@ func (m *manager) destroyCollectors() {
 }
 
 func (m *manager) updateMachineInfo(quit chan error) {
-	ticker := time.NewTicker(*updateMachineInfoInterval)
+	ticker := time.NewTicker(updateMachineInfoInterval)
 	for {
 		select {
 		case <-ticker.C:
@@ -383,11 +385,11 @@ func (m *manager) updateMachineInfo(quit chan error) {
 func (m *manager) globalHousekeeping(quit chan error) {
 	// Long housekeeping is either 100ms or half of the housekeeping interval.
 	longHousekeeping := 100 * time.Millisecond
-	if *globalHousekeepingInterval/2 < longHousekeeping {
-		longHousekeeping = *globalHousekeepingInterval / 2
+	if globalHousekeepingInterval/2 < longHousekeeping {
+		longHousekeeping = globalHousekeepingInterval / 2
 	}
 
-	ticker := time.NewTicker(*globalHousekeepingInterval)
+	ticker := time.NewTicker(globalHousekeepingInterval)
 	for {
 		select {
 		case t := <-ticker.C:
@@ -529,18 +531,17 @@ func (m *manager) GetContainerInfoV2(containerName string, options v2.RequestOpt
 	return infos, errs.OrNil()
 }
 
-
 func (m *manager) AllContainers(query *info.ContainerInfoRequest) (map[string]info.ContainerInfo, error) {
 	containers := make(map[string]*containerData, len(m.containers))
 	func() {
 		m.containersLock.RLock()
-                defer m.containersLock.RUnlock()
-                // Get containers in a namespace.
-                for _, cont := range m.containers {
-                	containers[cont.info.Name] = cont
-                }
-        }()
-        return m.containersInfo(containers, query)
+		defer m.containersLock.RUnlock()
+		// Get containers in a namespace.
+		for _, cont := range m.containers {
+			containers[cont.info.Name] = cont
+		}
+	}()
+	return m.containersInfo(containers, query)
 }
 
 func (m *manager) containerDataToContainerInfo(cont *containerData, query *info.ContainerInfoRequest) (*info.ContainerInfo, error) {
@@ -912,7 +913,8 @@ func (m *manager) createContainerLocked(containerName string, watchSource watche
 		return nil
 	}
 
-	logUsage := *logCadvisorUsage && containerName == m.cadvisorContainer
+	// log usage of cadvisor
+	logUsage := false
 	cont, err := newContainerData(containerName, m.memoryCache, handler, logUsage, m.maxHousekeepingInterval, m.allowDynamicHousekeeping, clock.RealClock{})
 	if err != nil {
 		return err
@@ -1222,7 +1224,7 @@ func parseEventsStoragePolicy() events.StoragePolicy {
 	policy := events.DefaultStoragePolicy()
 
 	// Parse max age.
-	parts := strings.Split(*eventStorageAgeLimit, ",")
+	parts := strings.Split(eventStorageAgeLimit, ",")
 	for _, part := range parts {
 		items := strings.Split(part, "=")
 		if len(items) != 2 {
@@ -1242,7 +1244,7 @@ func parseEventsStoragePolicy() events.StoragePolicy {
 	}
 
 	// Parse max number.
-	parts = strings.Split(*eventStorageEventLimit, ",")
+	parts = strings.Split(eventStorageEventLimit, ",")
 	for _, part := range parts {
 		items := strings.Split(part, "=")
 		if len(items) != 2 {

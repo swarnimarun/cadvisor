@@ -15,7 +15,6 @@
 package manager
 
 import (
-	"flag"
 	"fmt"
 	"math"
 	"math/rand"
@@ -44,9 +43,7 @@ import (
 	"k8s.io/utils/clock"
 )
 
-// Housekeeping interval.
-var enableLoadReader = flag.Bool("enable_load_reader", false, "Whether to enable cpu load reader")
-var HousekeepingInterval = flag.Duration("housekeeping_interval", 1*time.Second, "Interval between container housekeepings")
+var HousekeepingInterval = 1 * time.Second
 
 // TODO: replace regular expressions with something simpler, such as strings.Split().
 // cgroup type chosen to fetch the cgroup path of a process.
@@ -433,7 +430,7 @@ func newContainerData(containerName string, memoryCache *memory.InMemoryCache, h
 	cont := &containerData{
 		handler:                  handler,
 		memoryCache:              memoryCache,
-		housekeepingInterval:     *HousekeepingInterval,
+		housekeepingInterval:     HousekeepingInterval,
 		maxHousekeepingInterval:  maxHousekeepingInterval,
 		allowDynamicHousekeeping: allowDynamicHousekeeping,
 		logUsage:                 logUsage,
@@ -449,7 +446,7 @@ func newContainerData(containerName string, memoryCache *memory.InMemoryCache, h
 
 	cont.loadDecay = math.Exp(float64(-cont.housekeepingInterval.Seconds() / 10))
 
-	if *enableLoadReader {
+	if false {
 		// Create cpu load reader.
 		loadReader, err := cpuload.New()
 		if err != nil {
@@ -489,9 +486,9 @@ func (cd *containerData) nextHousekeepingInterval() time.Duration {
 				if cd.housekeepingInterval > cd.maxHousekeepingInterval {
 					cd.housekeepingInterval = cd.maxHousekeepingInterval
 				}
-			} else if cd.housekeepingInterval != *HousekeepingInterval {
+			} else if cd.housekeepingInterval != HousekeepingInterval {
 				// Lower interval back to the baseline.
-				cd.housekeepingInterval = *HousekeepingInterval
+				cd.housekeepingInterval = HousekeepingInterval
 			}
 		}
 	}
@@ -516,8 +513,8 @@ func (cd *containerData) housekeeping() {
 
 	// Long housekeeping is either 100ms or half of the housekeeping interval.
 	longHousekeeping := 100 * time.Millisecond
-	if *HousekeepingInterval/2 < longHousekeeping {
-		longHousekeeping = *HousekeepingInterval / 2
+	if HousekeepingInterval/2 < longHousekeeping {
+		longHousekeeping = HousekeepingInterval / 2
 	}
 
 	// Housekeep every second.
